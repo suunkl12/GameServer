@@ -36,7 +36,7 @@ public class Server {
         System.out.println("Server received: " + received);
 
         // Sending
-        String toSend = "Echo: " + received;
+        String toSend = "Echo: " + received + ", This is the host";
         byte[] toSendBytes = toSend.getBytes();
         int toSendLen = toSendBytes.length;
         byte[] toSendLenBytes = new byte[4];
