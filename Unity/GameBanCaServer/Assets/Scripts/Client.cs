@@ -24,7 +24,7 @@ namespace CSharpSocket {
         {
             string toSend = "Hello!";
 
-            IPEndPoint serverAddress = new IPEndPoint(IPAddress.Parse("192.168.100.34"), 6666);
+            IPEndPoint serverAddress = new IPEndPoint(IPAddress.Parse("192.168.100.34"), 4343);
 
             Socket clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             clientSocket.Connect(serverAddress);
