@@ -9,6 +9,6 @@ package egroup.gameserver;
  *
  * @author Khang
  */
-public class Server {
+public class Clients {
     
 }
