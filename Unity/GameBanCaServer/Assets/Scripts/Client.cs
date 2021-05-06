@@ -28,14 +28,13 @@ namespace CSharpSocket {
 
             Socket clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             clientSocket.Connect(serverAddress);
-
+            
             // Sending
             int toSendLen = System.Text.Encoding.ASCII.GetByteCount(toSend);
             byte[] toSendBytes = System.Text.Encoding.ASCII.GetBytes(toSend);
             byte[] toSendLenBytes = System.BitConverter.GetBytes(toSendLen);
             clientSocket.Send(toSendLenBytes);
             clientSocket.Send(toSendBytes);
-
             // Receiving
             byte[] rcvLenBytes = new byte[4];
             clientSocket.Receive(rcvLenBytes);
