@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AnimalController : MonoBehaviour
 {
+    public Animator animator;
     [SerializeField]
     private float speed = 10.0f;
     private Vector2 target;
@@ -14,6 +15,9 @@ public class AnimalController : MonoBehaviour
     private int tmpX = 0, tmpY = 0;
     private bool Checked = false;
     private bool Ways = false;
+    private void Awake() {
+        animator= GetComponent<Animator>();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +31,8 @@ public class AnimalController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
+        if(!animator.GetBool("Dead"))
+            transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
         if (transform.position == (Vector3)target)
         {
             Destroy(gameObject);
@@ -81,4 +86,8 @@ public class AnimalController : MonoBehaviour
         }
 
     }
+    public void Dead(){
+        Destroy(gameObject);
+    }
+
 }

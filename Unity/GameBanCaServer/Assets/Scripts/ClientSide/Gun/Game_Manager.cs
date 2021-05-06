@@ -5,11 +5,17 @@ using UnityEngine.UI;
 
 public class Game_Manager : MonoBehaviour
 {
+    public GameObject GunContainer;
     public Gun[] slotGun;
     public Gun playerIn;
     // Start is called before the first frame update
     void Start()
     {
+        slotGun = new Gun[GunContainer.gameObject.transform.childCount];
+        for (int i = 0; i < GunContainer.gameObject.transform.childCount; i++)
+        {
+            slotGun[i] = GunContainer.gameObject.transform.GetChild(i).gameObject.GetComponent<Gun>();
+        }
         setRandom();
         //setSlot();
     }
@@ -27,7 +33,7 @@ public class Game_Manager : MonoBehaviour
             {
                 slotGun[i].inUsed = true;
                 playerIn = slotGun[i];
-                Debug.Log(slotGun[i]);
+                //Debug.Log("You are in " + slotGun[i]);
                 break;
             }
             else
@@ -44,7 +50,7 @@ public class Game_Manager : MonoBehaviour
             {
                 slotGun[i].inUsed = true;
                 playerIn = slotGun[i];
-                Debug.Log(slotGun[i]);
+                //Debug.Log("You are in " + slotGun[i]);
                 break;
             }
             
