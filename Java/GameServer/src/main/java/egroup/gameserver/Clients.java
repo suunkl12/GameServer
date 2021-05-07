@@ -62,7 +62,9 @@ public class Clients implements ReceiveListener {
             json.put("rotation", rot);
             */
 //</editor-fold>
-            
+
+            json.put("action", "addNewPlayer");
+            json.put("id", client.getId());
             sendBroadcast(client, json.toString());
         } catch (JSONException e) {
             e.printStackTrace();

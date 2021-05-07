@@ -22,6 +22,7 @@ public class Client {
     
     public volatile Position position;
     public volatile float rotation;
+    public volatile int gunIndex;
     
     public Client(Socket client, ReceiveListener listener) throws IOException {
         this.client = client;
@@ -105,27 +106,49 @@ public class Client {
                         System.out.println(string);
                         
                         
-                        //JSONObject jsonObject = new JSONObject(string);
-/*
-                        JSONObject pos = jsonObject.optJSONObject("position");
-                            position.x = pos.optString("X");
-                            position.y = pos.optString("Y");
-                            position.z = pos.optString("Z");
-
-                        JSONObject rot = jsonObject.optJSONObject("rotation");
-                            rotation.x = rot.optString("X");
-                            rotation.y = rot.optString("Y");
-                            rotation.z = rot.optString("Z");
-                            rotation.w = rot.optString("W");
-*/
-                        //rotation =  new Float(string);
-                        //String str = String.valueOf(rotation);
-                        JSONObject json = new JSONObject();
-                        json.put("id", 2);
-                        json.put("action", "newPlayer");
-                        sendToClient(json.toString());
+                        JSONObject jsonObject = new JSONObject(string);
                         
+                        String action = jsonObject.optString("action");
+                        
+                        switch (action){
+                            case "saveGun":
+                                    gunIndex = jsonObject.optInt("index");
+                                    break;
+                            case "shoot":
+                                    JSONObject shootData = new JSONObject();
+                                    shootData.put("action","otherGunShoot");
+                                    shootData.put("index", gunIndex);
+                                    shootData.put("rotation",jsonObject.optFloat("rotation"));
+                                    sendToClient(shootData.toString());
+                            default:
+                                    sendToClient(string);
+                                    break;
+                        }
+                       // String id = jsonObject.optString("id");
+                        //rotation = jsonObject.optFloat("rotation");
+                        
+                        
+                        
+                        
+//<editor-fold defaultstate="collapsed" desc="Old json">
+                                /*
+                                JSONObject pos = jsonObject.optJSONObject("position");
+                                position.x = pos.optString("X");
+                                position.y = pos.optString("Y");
+                                position.z = pos.optString("Z");
+                                
+                                JSONObject rot = jsonObject.optJSONObject("rotation");
+                                rotation.x = rot.optString("X");
+                                rotation.y = rot.optString("Y");
+                                rotation.z = rot.optString("Z");
+                                rotation.w = rot.optString("W");
+                                */
+//</editor-fold>
+
                         //listener.dataReceive(Client.this, string);
+                        
+                        
+
                         
                         
 
