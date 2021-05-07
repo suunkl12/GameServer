@@ -60,6 +60,12 @@ public class Client {
             */
 //</editor-fold>
 
+
+            JSONObject json = new JSONObject();
+            json.put("action", "start");
+            json.put("id", id);
+            
+            sendToClient(json.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
