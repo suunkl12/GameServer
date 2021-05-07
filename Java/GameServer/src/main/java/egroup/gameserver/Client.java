@@ -1,3 +1,5 @@
+package egroup.gameserver;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 

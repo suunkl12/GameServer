@@ -1,3 +1,6 @@
+package egroup.gameserver;
+
+import egroup.gameserver.ReceiveListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
