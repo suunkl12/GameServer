@@ -63,8 +63,8 @@ public class Clients implements ReceiveListener {
             */
 //</editor-fold>
 
-            json.put("action", "addNewPlayer");
-            json.put("id", client.getId());
+            //json.put("action", "addNewPlayer");
+            //json.put("id", client.getId());
             sendBroadcast(client, json.toString());
         } catch (JSONException e) {
             e.printStackTrace();
@@ -103,5 +103,10 @@ public class Clients implements ReceiveListener {
                 */
             }
         }
+    }
+
+    @Override
+    public void dataReceve(Client client, List<Client> clients) {
+        
     }
 }

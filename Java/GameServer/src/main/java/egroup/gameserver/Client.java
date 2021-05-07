@@ -116,10 +116,12 @@ public class Client {
                                     break;
                             case "shoot":
                                     JSONObject shootData = new JSONObject();
+                                    rotation = jsonObject.optFloat("rotation");
                                     shootData.put("action","otherGunShoot");
                                     shootData.put("index", gunIndex);
                                     shootData.put("rotation",jsonObject.optFloat("rotation"));
-                                    sendToClient(shootData.toString());
+                                    //sendToClient(shootData.toString());
+                                    listener.dataReceive(Client.this, string);
                             default:
                                     sendToClient(string);
                                     break;
