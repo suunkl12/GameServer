@@ -62,6 +62,12 @@ public class Client {
             */
 //</editor-fold>
 
+
+            JSONObject json = new JSONObject();
+            json.put("action", "start");
+            json.put("id", id);
+            
+            sendToClient(json.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -114,9 +120,12 @@ public class Client {
                             rotation.z = rot.optString("Z");
                             rotation.w = rot.optString("W");
 */
-                        rotation =  new Float(string);
-                        String str = String.valueOf(rotation);
-                        sendToClient(str);
+                        //rotation =  new Float(string);
+                        //String str = String.valueOf(rotation);
+                        JSONObject json = new JSONObject();
+                        json.put("id", 2);
+                        json.put("action", "newPlayer");
+                        sendToClient(json.toString());
                         
                         //listener.dataReceive(Client.this, string);
                         
