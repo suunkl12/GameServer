@@ -10,7 +10,7 @@ public class ServerMain {
         try {
             Clients clients = new Clients();
 
-            ServerSocket serverSocket = new ServerSocket(16000);
+            ServerSocket serverSocket = new ServerSocket(4343);
             while (true) {
                 System.out.println("Wait client");
                 Socket socket = serverSocket.accept();

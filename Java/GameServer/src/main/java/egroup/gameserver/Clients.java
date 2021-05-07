@@ -27,7 +27,7 @@ public class Clients implements ReceiveListener {
     }
 
     public void sendBroadcast(Client client,  String data){
-        System.out.println("sendBroadcast");
+        System.out.println("sendBroadcast:" + data);
         for(Client item : clients){
             if(item != client) {
                 item.sendToClient(data);

@@ -121,7 +121,7 @@ public class Client {
                                     shootData.put("index", gunIndex);
                                     shootData.put("rotation",jsonObject.optFloat("rotation"));
                                     //sendToClient(shootData.toString());
-                                    listener.dataReceive(Client.this, string);
+                                    listener.dataReceive(Client.this, shootData.toString());
                             default:
                                     sendToClient(string);
                                     break;
