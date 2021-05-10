@@ -1,3 +1,5 @@
+package egroup.gameserver;
+
 /**
  * Created by prog on 15.03.15.
  */

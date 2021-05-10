@@ -1,8 +1,5 @@
 package egroup.gameserver;
 
-
-
-
 import java.util.List;
 
 /**
@@ -11,5 +8,5 @@ import java.util.List;
 public interface ReceiveListener {
     public void dataReceive(Client client, String data);
     
-    public void dataReceive(Client client, List<Client> clients);
+    public void dataReceve(Client client, List<Client> clients);
 }

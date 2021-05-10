@@ -1,6 +1,5 @@
 package egroup.gameserver;
 
-import egroup.gameserver.Position;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,7 +20,7 @@ public class Client {
     private InputStream inputStream;
     private OutputStream outputStream;
     private String id = UUID.randomUUID().toString();
-    private int maxGun = 4;
+    
     
     public volatile Position position;
     public volatile float rotation;
@@ -68,7 +67,6 @@ public class Client {
             JSONObject json = new JSONObject();
             json.put("action", "start");
             json.put("id", id);
-            json.put("index",GunAssigmnent.assignGun(maxGun));
             
             sendToClient(json.toString());
         } catch (JSONException e) {
@@ -120,14 +118,12 @@ public class Client {
                                     break;
                             case "shoot":
                                     JSONObject shootData = new JSONObject();
-                                    synchronized(shootData){
-                                        rotation = jsonObject.optFloat("rotation");
-                                        shootData.put("action","otherGunShoot");
-                                        shootData.put("index", gunIndex);
-                                        shootData.put("rotation",jsonObject.optFloat("rotation"));
-                                        //sendToClient(shootData.toString());
-                                        listener.dataReceive(Client.this, shootData.toString());
-                                    }
+                                    rotation = jsonObject.optFloat("rotation");
+                                    shootData.put("action","otherGunShoot");
+                                    shootData.put("index", gunIndex);
+                                    shootData.put("rotation",jsonObject.optFloat("rotation"));
+                                    //sendToClient(shootData.toString());
+                                    listener.dataReceive(Client.this, shootData.toString());
                             default:
                                     sendToClient(string);
                                     break;

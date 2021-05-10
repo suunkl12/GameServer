@@ -1,6 +1,5 @@
 package egroup.gameserver;
 
-
 import egroup.gameserver.ReceiveListener;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,7 +11,6 @@ import java.util.List;
  * Created by prog on 13.03.15.
  */
 public class Clients implements ReceiveListener {
-    
     private List<Client> clients = new ArrayList<Client>();
 
     public Clients() {
@@ -40,7 +38,6 @@ public class Clients implements ReceiveListener {
         }
     }
 
-    
     private void sendConnectNewPlayer(Client client){
         System.out.println("sendConnectNewPlayer");
         JSONObject json = new JSONObject();
@@ -112,7 +109,7 @@ public class Clients implements ReceiveListener {
     }
 
     @Override
-    public void dataReceive(Client client, List<Client> clients) {
+    public void dataReceve(Client client, List<Client> clients) {
         
     }
 }
