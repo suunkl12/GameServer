@@ -1,28 +1,35 @@
 package egroup.gameserver;
 
-import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+
 
 /**
  * Created by prog on 12.03.15.
  */
 public class ServerMain {
+    public static boolean DEBUG = false;
+    public static short TCP_PORT = 4296;
+    public static int TIMEOUT = 5000;
+    public static int PING_TIME = 200;
+    
+    
+    
     public static void main(String[] args){
-        try {
-            Clients clients = new Clients();
-
-            ServerSocket serverSocket = new ServerSocket(4343);
-            while (true) {
-                System.out.println("Wait client");
-                Socket socket = serverSocket.accept();
-                System.out.println("Client connected");
-                Client client = new Client(socket, clients);
-                clients.addClient(client);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(-1);
+        
+    }
+    
+    private void tcp(){
+        EventLoopGroup bossGroup = new NioEventLoopGroup();
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        try{
+            
+            ServerBootstrap b = new ServerBootstrap();
+            b.group(bossGroup,workerGroup);
+        }
+        catch(Exception ex){
+            
         }
     }
 }
