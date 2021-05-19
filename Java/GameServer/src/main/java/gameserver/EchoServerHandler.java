@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Testing;
+package gameserver;
 
 import com.google.protobuf.MessageLite;
 import io.netty.buffer.ByteBuf;
@@ -33,13 +33,17 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-    ByteBuf in = (ByteBuf) msg;
-    if( msg instanceof HotMessage.Packet)
+    //ByteBuf in = (ByteBuf) msg;
+    if( !(msg instanceof  HotMessage.Package ))
+    {
+        System.out.println("Not a package ");
         return;
-    System.out.println(
-    "Server received: " + in.toString(CharsetUtil.UTF_8));
+    }
     
-    ctx.write(in);
+    System.out.println(
+    "Server received: package +" + msg.toString());  //+ in.toString(CharsetUtil.UTF_8));
+    
+    ctx.write(msg);
     }
     
     @Override

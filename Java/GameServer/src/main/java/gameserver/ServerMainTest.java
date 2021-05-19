@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Testing;
+package gameserver;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -12,6 +12,10 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+
+
+import io.netty.handler.codec.protobuf.*;
+
 import java.net.InetSocketAddress;
 
 /**
@@ -52,7 +56,12 @@ public class ServerMainTest {
                         @Override
                         public void initChannel(SocketChannel ch)
                                 throws Exception {
+                            ch.pipeline().addLast((new ProtobufVarint32FrameDecoder()));
+                            ch.pipeline().addLast(new ProtobufDecoder(HotMessage.Package.getDefaultInstance()));
+                            ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
+                            ch.pipeline().addLast(new ProtobufEncoder());
                             ch.pipeline().addLast(serverHandler);
+                            
                         }
                     });
             
