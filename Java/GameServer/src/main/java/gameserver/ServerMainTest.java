@@ -10,6 +10,7 @@ import gameserver.objects.Rotation;
 import gameserver.utils.Vector2;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -20,6 +21,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.protobuf.*;
 
 import java.net.InetSocketAddress;
+import java.util.HashMap;
 
 /**
  *
@@ -27,8 +29,14 @@ import java.net.InetSocketAddress;
  */
 public class ServerMainTest {
 
+    public static int TIMEOUT = 5000;
+    
     private final int port;
-
+    
+    
+    
+    public static HashMap<Integer, Player> players = new HashMap<>();
+    public static HashMap<ChannelHandlerContext, EchoServerHandler> handlers = new HashMap<>();
     public ServerMainTest(int port) {
         this.port = port;
     }
@@ -60,7 +68,7 @@ public class ServerMainTest {
                         public void initChannel(SocketChannel ch)
                                 throws Exception {
                             ch.pipeline().addLast((new ProtobufVarint32FrameDecoder()));
-                            ch.pipeline().addLast(new ProtobufDecoder(HotMessage.Package.getDefaultInstance()));
+                            ch.pipeline().addLast(new ProtobufDecoder(HotMessage.Packet.getDefaultInstance()));
                             ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
                             ch.pipeline().addLast(new ProtobufEncoder());
                             

@@ -15,9 +15,12 @@ public abstract class Packet {
     public Packet(Type t){
 
         this.t = t;
-
     }
 
+    /**
+     * 
+     * @return the Type of the packet is being sent
+     */
     public Type getType(){
         return t;
     }
@@ -44,6 +47,7 @@ public abstract class Packet {
     }
 
     public abstract void write(Object... objects);
+    
     public abstract void read(String in);
 
     public enum Type {

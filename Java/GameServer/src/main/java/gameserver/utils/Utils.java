@@ -5,6 +5,8 @@
  */
 package gameserver.utils;
 
+import gameserver.objects.Player;
+import gameserver.packets.Packet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,27 @@ import java.util.List;
  * @author Khang
  */
 public class Utils {
+    
+    /**
+     * Create a packet Instance with the Packet class needed to send information to client,
+     * Like PlayerShoot packet or PlayerQuit packet
+     */
+    public static Packet packetInstance(Class<? extends Packet> c, Player p){
+
+        try {
+            Packet pt = c.getConstructor().newInstance();
+            pt.setChannel(p.getHandler().ctx);
+            pt.setPlayer(p);
+            return pt;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+    }
+    
+    
     public static List<Object> fromString(List<Class> types, String s){
         List<Object> objects = new ArrayList<>();
 
@@ -57,5 +80,45 @@ public class Utils {
 
         return objects;
 
+    }
+    
+    public static String toString(Object... objects){
+        StringBuilder sb = new StringBuilder();
+
+        for(int i = 0; i < objects.length; i++){
+            Object o = objects[i];
+
+            sb.append(o);
+
+            if (i != objects.length - 1) sb.append("|");
+
+        }
+
+        return sb.toString();
+    }
+    
+    /** 
+     * Check to see the type of the objects by compare the lengths and comparing the type of the objects to the input types
+     * @param types types to compare 
+     * @param objects objects to compare
+     * @return false if size of type is different from object length, or object types and types are not the same
+     */
+    public static Boolean isItSuitable(List<Class> types, Object... objects){
+
+        try {
+            if (objects.length < types.size() || objects.length > types.size()) return false;
+
+            for(int i = 0; i < types.size(); i++){
+
+                if(objects[i].getClass() != types.get(i)) return false;
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 }
