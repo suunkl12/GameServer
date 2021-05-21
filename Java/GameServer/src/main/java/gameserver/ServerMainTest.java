@@ -5,6 +5,9 @@
  */
 package gameserver;
 
+import gameserver.objects.Player;
+import gameserver.objects.Rotation;
+import gameserver.utils.Vector2;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -45,7 +48,7 @@ public class ServerMainTest {
     }
 
     public void start() throws Exception {
-        final EchoServerHandler serverHandler = new EchoServerHandler();
+        
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             ServerBootstrap b = new ServerBootstrap();
@@ -60,6 +63,13 @@ public class ServerMainTest {
                             ch.pipeline().addLast(new ProtobufDecoder(HotMessage.Package.getDefaultInstance()));
                             ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
                             ch.pipeline().addLast(new ProtobufEncoder());
+                            
+                            Integer id = Player.ider.next();
+                            
+                            Player p = new Player(id,new Vector2() , new Rotation());
+                            
+                            final EchoServerHandler serverHandler = new EchoServerHandler(p);
+                            
                             ch.pipeline().addLast(serverHandler);
                             
                         }

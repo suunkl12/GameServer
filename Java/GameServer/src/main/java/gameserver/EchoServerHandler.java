@@ -6,6 +6,7 @@
 package gameserver;
 
 import com.google.protobuf.MessageLite;
+import gameserver.objects.Player;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
@@ -21,13 +22,16 @@ import io.netty.util.CharsetUtil;
  */
 @Sharable
 public class EchoServerHandler extends ChannelInboundHandlerAdapter {
+    public Player p;
 
+    public EchoServerHandler(Player p) {
+        this.p = p;
+    }
     
-
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println(
-        "Channel activated ");
+        
+        System.out.println ("#" + p.getId () + "connected to the server!");
     }
     
     
