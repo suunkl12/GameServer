@@ -39,16 +39,16 @@ public final class HotMessage {
   /**
    * Protobuf type {@code gameserver.Package}
    */
-  public static final class Package extends
+  public static final class Packet extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:gameserver.Package)
       PackageOrBuilder {
   private static final long serialVersionUID = 0L;
     // Use Package.newBuilder() to construct.
-    private Package(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    private Packet(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private Package() {
+    private Packet() {
       Msg_ = "";
     }
 
@@ -56,7 +56,7 @@ public final class HotMessage {
     @SuppressWarnings({"unused"})
     protected java.lang.Object newInstance(
         UnusedPrivateParameter unused) {
-      return new Package();
+      return new Packet();
     }
 
     @java.lang.Override
@@ -64,7 +64,7 @@ public final class HotMessage {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private Package(
+    private Packet(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -121,8 +121,7 @@ public final class HotMessage {
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return gameserver.HotMessage.internal_static_gameserver_Package_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              gameserver.HotMessage.Package.class, gameserver.HotMessage.Package.Builder.class);
+          .ensureFieldAccessorsInitialized(gameserver.HotMessage.Packet.class, gameserver.HotMessage.Packet.Builder.class);
     }
 
     public static final int ID_FIELD_NUMBER = 1;
@@ -220,10 +219,10 @@ public final class HotMessage {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof gameserver.HotMessage.Package)) {
+      if (!(obj instanceof gameserver.HotMessage.Packet)) {
         return super.equals(obj);
       }
-      gameserver.HotMessage.Package other = (gameserver.HotMessage.Package) obj;
+      gameserver.HotMessage.Packet other = (gameserver.HotMessage.Packet) obj;
 
       if (getId()
           != other.getId()) return false;
@@ -249,69 +248,69 @@ public final class HotMessage {
       return hash;
     }
 
-    public static gameserver.HotMessage.Package parseFrom(
+    public static gameserver.HotMessage.Packet parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static gameserver.HotMessage.Package parseFrom(
+    public static gameserver.HotMessage.Packet parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static gameserver.HotMessage.Package parseFrom(
+    public static gameserver.HotMessage.Packet parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static gameserver.HotMessage.Package parseFrom(
+    public static gameserver.HotMessage.Packet parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static gameserver.HotMessage.Package parseFrom(byte[] data)
+    public static gameserver.HotMessage.Packet parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static gameserver.HotMessage.Package parseFrom(
+    public static gameserver.HotMessage.Packet parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static gameserver.HotMessage.Package parseFrom(java.io.InputStream input)
+    public static gameserver.HotMessage.Packet parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static gameserver.HotMessage.Package parseFrom(
+    public static gameserver.HotMessage.Packet parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static gameserver.HotMessage.Package parseDelimitedFrom(java.io.InputStream input)
+    public static gameserver.HotMessage.Packet parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static gameserver.HotMessage.Package parseDelimitedFrom(
+    public static gameserver.HotMessage.Packet parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static gameserver.HotMessage.Package parseFrom(
+    public static gameserver.HotMessage.Packet parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static gameserver.HotMessage.Package parseFrom(
+    public static gameserver.HotMessage.Packet parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -324,7 +323,7 @@ public final class HotMessage {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(gameserver.HotMessage.Package prototype) {
+    public static Builder newBuilder(gameserver.HotMessage.Packet prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -355,8 +354,7 @@ public final class HotMessage {
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return gameserver.HotMessage.internal_static_gameserver_Package_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                gameserver.HotMessage.Package.class, gameserver.HotMessage.Package.Builder.class);
+            .ensureFieldAccessorsInitialized(gameserver.HotMessage.Packet.class, gameserver.HotMessage.Packet.Builder.class);
       }
 
       // Construct using gameserver.HotMessage.Package.newBuilder()
@@ -391,13 +389,13 @@ public final class HotMessage {
       }
 
       @java.lang.Override
-      public gameserver.HotMessage.Package getDefaultInstanceForType() {
-        return gameserver.HotMessage.Package.getDefaultInstance();
+      public gameserver.HotMessage.Packet getDefaultInstanceForType() {
+        return gameserver.HotMessage.Packet.getDefaultInstance();
       }
 
       @java.lang.Override
-      public gameserver.HotMessage.Package build() {
-        gameserver.HotMessage.Package result = buildPartial();
+      public gameserver.HotMessage.Packet build() {
+        gameserver.HotMessage.Packet result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -405,8 +403,8 @@ public final class HotMessage {
       }
 
       @java.lang.Override
-      public gameserver.HotMessage.Package buildPartial() {
-        gameserver.HotMessage.Package result = new gameserver.HotMessage.Package(this);
+      public gameserver.HotMessage.Packet buildPartial() {
+        gameserver.HotMessage.Packet result = new gameserver.HotMessage.Packet(this);
         result.id_ = id_;
         result.Msg_ = Msg_;
         onBuilt();
@@ -447,16 +445,16 @@ public final class HotMessage {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof gameserver.HotMessage.Package) {
-          return mergeFrom((gameserver.HotMessage.Package)other);
+        if (other instanceof gameserver.HotMessage.Packet) {
+          return mergeFrom((gameserver.HotMessage.Packet)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(gameserver.HotMessage.Package other) {
-        if (other == gameserver.HotMessage.Package.getDefaultInstance()) return this;
+      public Builder mergeFrom(gameserver.HotMessage.Packet other) {
+        if (other == gameserver.HotMessage.Packet.getDefaultInstance()) return this;
         if (other.getId() != 0) {
           setId(other.getId());
         }
@@ -479,11 +477,11 @@ public final class HotMessage {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        gameserver.HotMessage.Package parsedMessage = null;
+        gameserver.HotMessage.Packet parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (gameserver.HotMessage.Package) e.getUnfinishedMessage();
+          parsedMessage = (gameserver.HotMessage.Packet) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -616,37 +614,37 @@ public final class HotMessage {
     }
 
     // @@protoc_insertion_point(class_scope:gameserver.Package)
-    private static final gameserver.HotMessage.Package DEFAULT_INSTANCE;
+    private static final gameserver.HotMessage.Packet DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new gameserver.HotMessage.Package();
+      DEFAULT_INSTANCE = new gameserver.HotMessage.Packet();
     }
 
-    public static gameserver.HotMessage.Package getDefaultInstance() {
+    public static gameserver.HotMessage.Packet getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<Package>
-        PARSER = new com.google.protobuf.AbstractParser<Package>() {
+    private static final com.google.protobuf.Parser<Packet>
+        PARSER = new com.google.protobuf.AbstractParser<Packet>() {
       @java.lang.Override
-      public Package parsePartialFrom(
+      public Packet parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Package(input, extensionRegistry);
+        return new Packet(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<Package> parser() {
+    public static com.google.protobuf.Parser<Packet> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<Package> getParserForType() {
+    public com.google.protobuf.Parser<Packet> getParserForType() {
       return PARSER;
     }
 
     @java.lang.Override
-    public gameserver.HotMessage.Package getDefaultInstanceForType() {
+    public gameserver.HotMessage.Packet getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
