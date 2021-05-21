@@ -5,6 +5,7 @@
  */
 package gameserver.utils;
 
+import gameserver.ServerMainTest;
 import gameserver.objects.Player;
 import gameserver.packets.Packet;
 import java.util.ArrayList;
@@ -120,5 +121,22 @@ public class Utils {
         }
 
         return true;
+    }
+    
+    
+    
+    /**
+     * Send all other players a packet
+     * @param c packet class to send
+     * @param objects messages objects to send
+     */
+    public static void writeAll(Class<? extends Packet> c, Object... objects){
+
+        for(Player p : ServerMainTest.players.values()){
+
+            packetInstance(c, p).write(objects);
+
+        }
+
     }
 }

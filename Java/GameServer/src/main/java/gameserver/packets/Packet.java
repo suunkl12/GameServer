@@ -5,6 +5,12 @@ import gameserver.objects.Player;
 
 import java.util.*;
 
+
+/**
+ * This class packet contains a read function to read incoming message and a write message to write outgoing message that will be
+ * implemented by by other classes that inherit it.
+ * @author Khang
+ */
 public abstract class Packet {
 
     public static Map<Class<? extends Packet>, List<Class>> values = new HashMap<>();
@@ -43,6 +49,7 @@ public abstract class Packet {
         return values.get(getClass());
     }
     public static void setTypes(Class c, Class... cs){
+        //Array.asList is a faster way to initialize an array
         values.put((Class<? extends Packet>) c, Arrays.asList(cs));
     }
 

@@ -36,7 +36,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         this.ctx = ctx;
-        System.out.println ("#" + p.getId () + "connected to the server!");
+        System.out.println ("Player: " + p.getId () + " connected to the server!");
         
         // PLAYERS
          for (Player o: ServerMainTest.players.values ()) {
@@ -70,14 +70,14 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
-        ctx.writeAndFlush(Unpooled.EMPTY_BUFFER)
-        .addListener(ChannelFutureListener.CLOSE);
+        ctx.flush();
+        //ctx.writeAndFlush(Unpooled.EMPTY_BUFFER)
+        //.addListener(ChannelFutureListener.CLOSE);
     }
     
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println(
-        "Channel inactivated ");
+         System.out.println ("Player:" + p.getId () + " disconnected from the server!");
     }
     
     @Override

@@ -23,10 +23,10 @@ public class Player extends GameObject{
     
     public static Ider ider = new Ider();
     private Long l;
-    
+    private EchoServerHandler h;
     
     private ScheduledExecutorService e;
-    private EchoServerHandler h;
+    
     
     public HashMap<Integer, Integer> staying = new HashMap<>();
     
@@ -45,7 +45,6 @@ public class Player extends GameObject{
                 //Nếu như mất quá lâu để kết nói thì disconnect
                 h.ctx.disconnect();
                 return;
-
             }
             
             HashMap<Integer, Integer> map = new HashMap<>();

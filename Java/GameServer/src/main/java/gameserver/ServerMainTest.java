@@ -31,7 +31,7 @@ public class ServerMainTest {
 
     public static int TIMEOUT = 5000;
     
-    private final int port;
+    private final int port ;
     
     
     
@@ -74,10 +74,14 @@ public class ServerMainTest {
                             
                             Integer id = Player.ider.next();
                             
-                            Player p = new Player(id,new Vector2() , new Rotation());
-                            
+                            Player p = new Player(id,new Vector2(5,-5) , new Rotation());
                             final EchoServerHandler serverHandler = new EchoServerHandler(p);
                             
+                            //Gán handler cho player
+                            p.setHandler(serverHandler);
+                            
+                            //Lưu trữ player để gửi thông điệp
+                            players.put(id, p);
                             ch.pipeline().addLast(serverHandler);
                             
                         }
