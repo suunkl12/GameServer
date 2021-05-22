@@ -24,6 +24,8 @@ public class Utils {
     public static Packet packetInstance(Class<? extends Packet> c, Player p){
 
         try {
+            //Get constructor của Packet type tương ứng
+            //Ví dụ, nếu c là PlayerSpawnPacket, nó sẽ lấy constructor của Packet loại đó
             Packet pt = c.getConstructor().newInstance();
             pt.setChannel(p.getHandler().ctx);
             pt.setPlayer(p);

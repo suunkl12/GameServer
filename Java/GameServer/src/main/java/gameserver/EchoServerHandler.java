@@ -6,6 +6,7 @@
 package gameserver;
 
 import com.google.protobuf.MessageLite;
+import gameserver.enums.ObjectType;
 import gameserver.objects.Player;
 import gameserver.packets.*;
 
@@ -33,10 +34,17 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
         this.p = p;
     }
     
+    
+    
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         this.ctx = ctx;
-        System.out.println ("Player: " + p.getId () + " connected to the server!");
+        if(ServerMainTest.players.size() >= ServerMainTest.MaxPlayer) return;
+        
+        System.out.println ("Player " + p.getId () + " connected to the server!");
+        
+        //p là người dùng mà nó sẽ gửi đến, mỗi player có một Handler mà Utils sẽ gán cho packet để gửi thông tin
+        Utils.packetInstance(ClientInfoPacket.class,p).write(p.getId(),0);
         
         // PLAYERS
          for (Player o: ServerMainTest.players.values ()) {
@@ -44,7 +52,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
              // SENDING EVERYONE ABOUT THE NEW PLAYER'S SPAWN
              Utils.packetInstance (PlayerSpawnPacket.class, o) .write (p.getId (), p.getPosition ().x, p.getPosition ().y, p.getRotation ().z, p.getRotation ().w);
 
-             // SENDING A NEW PLAYER ABOUT PLAYERS OTHER THAN YOURSELF (packet above is sent)
+             // SENDING THE NEW PLAYER ABOUT OTHER PLAYERS  THAN YOURSELF (packet above is sent)
              if (o == p) continue;
 
              Utils.packetInstance (PlayerSpawnPacket.class, p) .write (o.getId (), o.getPosition ().x, o.getPosition ().y, o.getRotation ().z, o.getRotation ().w);
@@ -77,7 +85,20 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-         System.out.println ("Player:" + p.getId () + " disconnected from the server!");
+         System.out.println ("Player " + p.getId () + " disconnected from the server!");
+         
+         
+         //Despawn tất cả người chơi cho người chơi này, bởi vì người chơi này disconnect
+         for(Player p : ServerMainTest.players.values()){
+
+            Utils.packetInstance(ObjectDespawnPacket.class, p).write(this.p.getId(), ObjectType.PLAYER);
+
+        }
+         
+        ServerMainTest.gunPositions.get(p.gunIndex).setIsUsed(false);
+        ServerMainTest.handlers.remove(ctx);
+        ServerMainTest.players.remove(p.getId());
+        Player.ider.add(p.getId());
     }
     
     @Override

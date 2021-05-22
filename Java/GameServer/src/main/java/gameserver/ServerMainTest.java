@@ -5,8 +5,10 @@
  */
 package gameserver;
 
+import egroup.gameserver.Position;
 import gameserver.objects.Player;
-import gameserver.objects.Rotation;
+import gameserver.utils.GunSlot;
+import gameserver.utils.Rotation;
 import gameserver.utils.Vector2;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -21,7 +23,11 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.protobuf.*;
 
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -30,13 +36,23 @@ import java.util.HashMap;
 public class ServerMainTest {
 
     public static int TIMEOUT = 5000;
-    
+    public static int MaxPlayer = 4;
     private final int port ;
     
     
     
     public static HashMap<Integer, Player> players = new HashMap<>();
     public static HashMap<ChannelHandlerContext, EchoServerHandler> handlers = new HashMap<>();
+    
+    public static List<GunSlot> gunPositions = new ArrayList<>(
+            Arrays.asList(
+                    new GunSlot(new Vector2(5, -5), false) ,
+                    new GunSlot(new Vector2(-5,-5), false),
+                    new GunSlot(new Vector2(5,5), false),
+                    new GunSlot(new Vector2(-5,5), false)
+                    ));
+    
+    
     public ServerMainTest(int port) {
         this.port = port;
     }
@@ -72,9 +88,26 @@ public class ServerMainTest {
                             ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
                             ch.pipeline().addLast(new ProtobufEncoder());
                             
+                            Random r = new Random();
+                            Player p;
                             Integer id = Player.ider.next();
                             
-                            Player p = new Player(id,new Vector2(5,-5) , new Rotation());
+                            do
+                            {
+                            //TODO set gun to random
+                            int i = r.ints(0, gunPositions.size() - 1).findFirst().getAsInt() ; 
+                            if (!gunPositions.get(i).getIsUsed())
+                            {
+                                gunPositions.get(i).setIsUsed(true);
+                                System.out.println("You are in slotGun: " + i);
+                                p = new Player(id,gunPositions.get(i).getGunPosition() , new Rotation());
+                                
+                                p.gunIndex = i;
+                                break;
+                            }
+                            
+                            } while (true);
+                            
                             final EchoServerHandler serverHandler = new EchoServerHandler(p);
                             
                             //Gán handler cho player
@@ -94,4 +127,6 @@ public class ServerMainTest {
             group.shutdownGracefully().sync();
         }
     }
+    
+    
 }

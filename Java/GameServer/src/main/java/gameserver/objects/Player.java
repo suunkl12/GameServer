@@ -5,6 +5,7 @@
  */
 package gameserver.objects;
 
+import gameserver.utils.Rotation;
 import gameserver.EchoServerHandler;
 import gameserver.ServerMainTest;
 import gameserver.utils.*;
@@ -24,6 +25,7 @@ public class Player extends GameObject{
     public static Ider ider = new Ider();
     private Long l;
     private EchoServerHandler h;
+    public int gunIndex;
     
     private ScheduledExecutorService e;
     
@@ -55,6 +57,8 @@ public class Player extends GameObject{
 
         }, 100, 100, TimeUnit.MILLISECONDS);
     }
+    
+    
     
     public Player(Integer id, Vector2 position) {
         super(id, position);

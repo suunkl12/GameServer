@@ -5,6 +5,7 @@
  */
 package gameserver.objects;
 
+import gameserver.utils.Rotation;
 import gameserver.utils.Vector2;
 
 /**
