@@ -35,7 +35,6 @@ public class ObjectDespawnPacket extends Packet {
         if (!Utils.isItSuitable(getTypes(), objects)) return;
 
         getChannel().writeAndFlush(HotMessage.Packet.newBuilder().setId(getType().getTag()).setMsg(Utils.toString(objects)).build());
-
     }
 
     @Override

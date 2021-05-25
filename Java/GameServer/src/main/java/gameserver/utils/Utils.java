@@ -5,12 +5,14 @@
  */
 package gameserver.utils;
 
+import gameserver.HotMessage;
 import gameserver.ServerMainTest;
 import gameserver.objects.Player;
 import gameserver.packets.Packet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.dyn4j.dynamics.*;
 /**
  *
  * @author Khang
@@ -38,6 +40,12 @@ public class Utils {
 
     }
     
+    public static Packet messageToPacket(HotMessage.Packet o, Player p){
+        if(!ServerMainTest.packets.containsKey(o.getId())) return null;
+
+        return packetInstance(ServerMainTest.packets.get(o.getId()), p);
+
+    }
     
     public static List<Object> fromString(List<Class> types, String s){
         List<Object> objects = new ArrayList<>();
@@ -125,7 +133,20 @@ public class Utils {
         return true;
     }
     
-    
+    public static Boolean isItSuitable(List<Class> types, String s){
+
+        try {
+            String[] ss = s.split("\\|");
+
+            if (ss.length < types.size() || ss.length > types.size()) return false;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
     
     /**
      * Send all other players a packet

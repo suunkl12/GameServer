@@ -65,15 +65,12 @@ public abstract class Packet {
         private Integer i;
 
         Type(Integer i){
-
             this.i = i;
-
         }
 
         public Integer getTag(){
             return i;
         }
-
     }
 
 }

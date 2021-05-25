@@ -70,8 +70,15 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
         return;
     }
     
-    System.out.println(
-    "Server received: package +" + msg.toString());  //+ in.toString(CharsetUtil.UTF_8));
+        HotMessage.Packet pt = (HotMessage.Packet) msg;
+
+        //System.out.println(p.getId() + " -> " + pt.getId() + ": " + pt.getMsg());
+
+        Packet p2 = Utils.messageToPacket(pt, p);
+        if (p2 != null) {
+            try { p2.read(pt.getMsg()); }
+            catch(Exception ignored) { }
+        }
     
     ctx.write(msg);
     }

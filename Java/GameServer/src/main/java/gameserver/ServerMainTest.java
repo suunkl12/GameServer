@@ -7,6 +7,7 @@ package gameserver;
 
 import egroup.gameserver.Position;
 import gameserver.objects.Player;
+import gameserver.packets.*;
 import gameserver.utils.GunSlot;
 import gameserver.utils.Rotation;
 import gameserver.utils.Vector2;
@@ -39,7 +40,21 @@ public class ServerMainTest {
     public static int MaxPlayer = 4;
     private final int port ;
     
-    
+    public static HashMap<Integer, Class<? extends Packet>> packets = new HashMap<Integer, Class<? extends Packet>>(){{
+
+        //put(1, PingPacket.class);
+        put(2, PlayerSpawnPacket.class);
+        put(3, ClientInfoPacket.class);
+        //put(4, ObjectSpawnPacket.class);
+        //put(5, PlayerMovePacket.class);
+        put(6, PlayerShootPacket.class);
+        put(7, ObjectDespawnPacket.class);
+        //put(8, PlayerInfoPacket.class);
+        //put(9, CircleInfoPacket.class);
+        //put(10, PlayerPickupPacket.class);
+        //put(11, ObjectInfoPacket.class);
+
+    }};
     
     public static HashMap<Integer, Player> players = new HashMap<>();
     public static HashMap<ChannelHandlerContext, EchoServerHandler> handlers = new HashMap<>();
@@ -94,7 +109,7 @@ public class ServerMainTest {
                             
                             do
                             {
-                            //TODO set gun to random
+                            // set gun to random
                             int i = r.ints(0, gunPositions.size() - 1).findFirst().getAsInt() ; 
                             if (!gunPositions.get(i).getIsUsed())
                             {

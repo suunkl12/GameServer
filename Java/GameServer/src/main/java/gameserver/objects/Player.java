@@ -45,15 +45,15 @@ public class Player extends GameObject{
             if (getDifference() >= ServerMainTest.TIMEOUT){
 
                 //Nếu như mất quá lâu để kết nói thì disconnect
-                h.ctx.disconnect();
-                return;
+                //h.ctx.disconnect();
+                //return;
             }
             
-            HashMap<Integer, Integer> map = new HashMap<>();
+            //HashMap<Integer, Integer> map = new HashMap<>();
             
-            List<Integer> remove = new ArrayList<>();
-            for(Integer key : p.staying.keySet()){ if (!map.containsKey(key)) remove.add(key); }
-            for(Integer key : remove){ p.staying.remove(key); }
+            //List<Integer> remove = new ArrayList<>();
+            //for(Integer key : p.staying.keySet()){ if (!map.containsKey(key)) remove.add(key); }
+            //for(Integer key : remove){ p.staying.remove(key); }
 
         }, 100, 100, TimeUnit.MILLISECONDS);
     }
