@@ -66,7 +66,7 @@ public class BasketBall extends SimulationFrame {
 	// images
 
 	/** The basketball image */
-	private static final BufferedImage BASKETBALL = getImageSuppressExceptions("../Simulation/resources/Basketball.png");
+	private static final BufferedImage BASKETBALL = getImageSuppressExceptions("..Simulation/resources/Basketball.png");
 
 	/** Helper function to read the images from the class path */
 	private static final BufferedImage getImageSuppressExceptions(String pathOnClasspath) {

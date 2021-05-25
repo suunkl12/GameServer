@@ -87,6 +87,7 @@ public final class Billiards extends SimulationFrame {
 		// I wouldn't do this in practice - I'm being lazy and using a body
 		// to render a green bottom to the billiards table.  Instead, you should
 		// just render the green bottom and not use a body.
+                                    // Use graphic 2D to render the bottom
 		SimulationBody bottom = new SimulationBody(new Color(60, 164, 114));
 		BodyFixture bf = bottom.addFixture(Geometry.createRectangle(tableWidth, tableHeight), 1.0, 0.0, 0.0);
 		bf.setFilter(new Filter() {
