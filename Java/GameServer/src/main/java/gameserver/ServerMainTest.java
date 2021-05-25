@@ -113,9 +113,16 @@ public class ServerMainTest {
                             int i = r.ints(0, gunPositions.size() - 1).findFirst().getAsInt() ; 
                             if (!gunPositions.get(i).getIsUsed())
                             {
+                                Rotation rot = new Rotation();
+                                
+                                //2 and 3 are gun indexes on the top
+                                if(i==2 || i==3){
+                                    rot.z = 180f;
+                                }
+                                
                                 gunPositions.get(i).setIsUsed(true);
                                 System.out.println("You are in slotGun: " + i);
-                                p = new Player(id,gunPositions.get(i).getGunPosition() , new Rotation());
+                                p = new Player(id,gunPositions.get(i).getGunPosition() , rot);
                                 
                                 p.gunIndex = i;
                                 break;
