@@ -22,7 +22,7 @@
  * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package Simulation;
+package Simulation.Scene;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -66,7 +66,7 @@ public class BasketBall extends SimulationFrame {
 	// images
 
 	/** The basketball image */
-	private static final BufferedImage BASKETBALL = getImageSuppressExceptions("/Simulation/resources/Basketball.png");
+	private static final BufferedImage BASKETBALL = getImageSuppressExceptions("../Simulation/resources/Basketball.png");
 
 	/** Helper function to read the images from the class path */
 	private static final BufferedImage getImageSuppressExceptions(String pathOnClasspath) {

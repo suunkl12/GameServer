@@ -22,9 +22,12 @@
  * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package Simulation;
+package Simulation.Scene;
 
-import org.dyn4j.geometry.Convex;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import org.dyn4j.geometry.Geometry;
 import org.dyn4j.geometry.MassType;
 import org.dyn4j.geometry.Vector2;
@@ -32,61 +35,83 @@ import Simulation.framework.SimulationBody;
 import Simulation.framework.SimulationFrame;
 
 /**
- * An example of using a "Concave" body.
+ * A simple scene where you use Mouse Button 3 to create boxes.
  * @author William Bittle
- * @since 4.1.1
  * @version 4.1.1
+ * @since 3.2.0
  */
-public class Concave extends SimulationFrame {
+public class Stacking extends SimulationFrame {
 	/** The serial version id */
-	private static final long serialVersionUID = 8797361529527319100L;
+	private static final long serialVersionUID = -1366264828445805140L;
+
+	/** A point for tracking the mouse click */
+	private Point point;
+	
+	/**
+	 * A custom mouse adapter for listening for mouse clicks.
+	 * @author William Bittle
+	 * @version 3.2.1
+	 * @since 3.2.0
+	 */
+	private final class CustomMouseAdapter extends MouseAdapter {
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// store the mouse click postion for use later
+			if (e.getButton() == MouseEvent.BUTTON3) {
+				point = new Point(e.getX(), e.getY());
+			}
+		}
+		
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			point = null;
+		}
+	}
 
 	/**
 	 * Default constructor.
 	 */
-	public Concave() {
-		super("Concave", 64.0);
+	public Stacking() {
+		super("Stacking", 32.0);
 		
-		this.setOffsetY(-200);
+		MouseAdapter ml = new CustomMouseAdapter();
+		this.canvas.addMouseMotionListener(ml);
+		this.canvas.addMouseWheelListener(ml);
+		this.canvas.addMouseListener(ml);
+	}
+	
+	/**
+	 * Creates game objects and adds them to the world.
+	 */
+	protected void initializeWorld() {
+		SimulationBody floor = new SimulationBody();
+	    floor.addFixture(Geometry.createRectangle(20, 1), 1.0, 0.5, 0.0);
+	    floor.setMass(MassType.INFINITE);
+	    this.world.addBody(floor);
 	}
 	
 	/* (non-Javadoc)
-	 * @see Simulation.framework.SimulationFrame#initializeWorld()
+	 * @see Simulation.framework.SimulationFrame#handleEvents()
 	 */
-	protected void initializeWorld() {
-		// Ground
-		SimulationBody ground = new SimulationBody();
-		ground.addFixture(Geometry.createRectangle(15.0, 1.0));
-	    ground.setMass(MassType.INFINITE);
-	    world.addBody(ground);
-
-	    // Concave
-	    SimulationBody table = new SimulationBody();
-	    {
-	      Convex c = Geometry.createRectangle(3.0, 1.0);
-	      c.translate(new Vector2(0.0, 0.5));
-	      table.addFixture(c);
-	    }
-	    {
-	      Convex c = Geometry.createRectangle(1.0, 1.0);
-	      c.translate(new Vector2(-1.0, -0.5));
-	      table.addFixture(c);
-	    }
-	    {
-	      Convex c = Geometry.createRectangle(1.0, 1.0);
-	      c.translate(new Vector2(1.0, -0.5));
-	      table.addFixture(c);
-	    }
-	    table.translate(new Vector2(0.0, 4.0));
-	    table.setMass(MassType.NORMAL);
-	    world.addBody(table);
-
-	    // Body3
-	    SimulationBody box = new SimulationBody();
-	    box.addFixture(Geometry.createSquare(0.5));
-	    box.translate(new Vector2(0.0, 1.0));
-	    box.setMass(MassType.NORMAL);
-	    world.addBody(box);
+	@Override
+	protected void handleEvents() {
+		super.handleEvents();
+		
+		// see if the user clicked
+		if (this.point != null) {
+			// convert from screen space to world space coordinates
+			Vector2 v = this.toWorldCoordinates(this.point);
+			
+			// create a new body
+			SimulationBody no = new SimulationBody();
+			no.addFixture(Geometry.createSquare(0.5), 1.0, 0.8, 0.0);
+			no.translate(v.x, v.y);
+			no.setMass(MassType.NORMAL);
+			this.world.addBody(no);
+			
+			// clear the point
+			this.point = null;
+		}
 	}
 	
 	/**
@@ -94,7 +119,7 @@ public class Concave extends SimulationFrame {
 	 * @param args command line arguments
 	 */
 	public static void main(String[] args) {
-		Concave simulation = new Concave();
+		Stacking simulation = new Stacking();
 		simulation.run();
 	}
 }

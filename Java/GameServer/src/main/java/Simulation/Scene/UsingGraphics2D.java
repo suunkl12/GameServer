@@ -22,117 +22,67 @@
  * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package Simulation;
-
-import java.util.HashMap;
-import java.util.Map;
+package Simulation.Scene;
 
 import org.dyn4j.dynamics.BodyFixture;
-import org.dyn4j.dynamics.contact.Contact;
+import org.dyn4j.geometry.Capsule;
+import org.dyn4j.geometry.Circle;
 import org.dyn4j.geometry.Geometry;
 import org.dyn4j.geometry.MassType;
+import org.dyn4j.geometry.Polygon;
+import org.dyn4j.geometry.Rectangle;
+import org.dyn4j.geometry.Slice;
+import org.dyn4j.geometry.Triangle;
 import org.dyn4j.geometry.Vector2;
 import Simulation.framework.SimulationBody;
 import Simulation.framework.SimulationFrame;
-import org.dyn4j.world.ContactCollisionData;
-import org.dyn4j.world.listener.ContactListenerAdapter;
 
 /**
- * A simple scene with a few shape types that tracks the creation,
- * persistence and removal of contacts by using their unique ids.
+ * Class used to show a simple example of using the dyn4j project using
+ * Java2D for rendering.
+ * <p>
+ * This class can be used as a starting point for projects.
  * @author William Bittle
  * @version 4.1.1
  * @since 3.0.0
  */
-public class Tracking extends SimulationFrame {
+public class UsingGraphics2D extends SimulationFrame {
 	/** The serial version id */
-	private static final long serialVersionUID = -7551190289570564575L;
-
-	/**
-	 * A simple class to generate "id"s.
-	 * @author William Bittle
-	 * @version 4.1.1
-	 * @since 4.1.1
-	 */
-	private class IdGenerator {
-		private long lastId = -1;
-		public final Object getId() {
-			return Long.valueOf(++lastId);
-		}
-	}
-	
-	// contact listening
-	
-	/** A mapping of contact id to UUID */
-	private final Map<Contact, Object> idTracking = new HashMap<Contact, Object>();
-	
-	/** The id generator */
-	private final IdGenerator idGenerator = new IdGenerator();
+	private static final long serialVersionUID = 5663760293144882635L;
 	
 	/**
-	 * A custom contact listener for tracking contacts.
-	 * @author William Bittle
-	 * @version 3.2.1
-	 * @since 3.2.1
+	 * Default constructor for the window
 	 */
-	private class CustomContactListener extends ContactListenerAdapter<SimulationBody> {
-		@Override
-		public void begin(ContactCollisionData<SimulationBody> collision, Contact contact) {
-			Object id = idGenerator.getId();
-			idTracking.put(contact, id);
-			System.out.println("BEGIN: " + id);
-		}
+	public UsingGraphics2D() {
+		super("Graphics2D Example", 45.0);
 		
-		@Override
-		public void persist(ContactCollisionData<SimulationBody> collision, Contact oldContact, Contact newContact) {
-			Object id = idTracking.get(oldContact);
-			if (id == null) {
-				System.err.println("Shouldn't happen");
-			}
-			// since the contact object itself changes between iterations
-			// remove the old contact and add the new contact with the same id
-			idTracking.remove(oldContact);
-			idTracking.put(newContact, id);
-		}
-		
-		@Override
-		public void end(ContactCollisionData<SimulationBody> collision, Contact contact) {
-			Object id = idTracking.get(contact);
-			if (id == null) {
-				System.err.println("Shouldn't happen");
-			}
-			System.out.println("END: " + id);
-			idTracking.remove(contact);
-		}
-	}
-	
-	/**
-	 * Default constructor.
-	 */
-	public Tracking() {
-		super("Tracking", 45.0);
 	}
 	
 	/**
 	 * Creates game objects and adds them to the world.
+	 * <p>
+	 * Basically the same shapes from the Shapes test in
+	 * the TestBed.
 	 */
 	protected void initializeWorld() {
 		// create all your bodies/joints
 		
 		// create the floor
+		Rectangle floorRect = new Rectangle(15.0, 1.0);
 		SimulationBody floor = new SimulationBody();
-		floor.addFixture(Geometry.createRectangle(15, 1));
+		floor.addFixture(new BodyFixture(floorRect));
 		floor.setMass(MassType.INFINITE);
 		// move the floor down a bit
 		floor.translate(0.0, -4.0);
 		this.world.addBody(floor);
 		
 		// create a triangle object
-		SimulationBody triangle = new SimulationBody();
-		triangle.addFixture(Geometry.createTriangle(
+		Triangle triShape = new Triangle(
 				new Vector2(0.0, 0.5), 
 				new Vector2(-0.5, -0.5), 
-				new Vector2(0.5, -0.5)));
+				new Vector2(0.5, -0.5));
+		SimulationBody triangle = new SimulationBody();
+		triangle.addFixture(triShape);
 		triangle.setMass(MassType.NORMAL);
 		triangle.translate(-1.0, 2.0);
 		// test having a velocity
@@ -140,8 +90,9 @@ public class Tracking extends SimulationFrame {
 		this.world.addBody(triangle);
 		
 		// create a circle
+		Circle cirShape = new Circle(0.5);
 		SimulationBody circle = new SimulationBody();
-		circle.addFixture(Geometry.createCircle(0.5));
+		circle.addFixture(cirShape);
 		circle.setMass(MassType.NORMAL);
 		circle.translate(2.0, 2.0);
 		// test adding some force
@@ -151,34 +102,39 @@ public class Tracking extends SimulationFrame {
 		this.world.addBody(circle);
 		
 		// try a rectangle
+		Rectangle rectShape = new Rectangle(1.0, 1.0);
 		SimulationBody rectangle = new SimulationBody();
-		rectangle.addFixture(Geometry.createRectangle(1, 1));
+		rectangle.addFixture(rectShape);
 		rectangle.setMass(MassType.NORMAL);
 		rectangle.translate(0.0, 2.0);
 		rectangle.getLinearVelocity().set(-5.0, 0.0);
 		this.world.addBody(rectangle);
 		
 		// try a polygon with lots of vertices
+		Polygon polyShape = Geometry.createUnitCirclePolygon(10, 1.0);
 		SimulationBody polygon = new SimulationBody();
-		polygon.addFixture(Geometry.createUnitCirclePolygon(10, 1));
+		polygon.addFixture(polyShape);
 		polygon.setMass(MassType.NORMAL);
 		polygon.translate(-2.5, 2.0);
 		// set the angular velocity
 		polygon.setAngularVelocity(Math.toRadians(-20.0));
 		this.world.addBody(polygon);
 		
-		// try a compound object (Capsule)
-		BodyFixture c1Fixture = new BodyFixture(Geometry.createCircle(0.5));
-		BodyFixture c2Fixture = new BodyFixture(Geometry.createCircle(0.5));
+		// try a compound object
+		Circle c1 = new Circle(0.5);
+		BodyFixture c1Fixture = new BodyFixture(c1);
 		c1Fixture.setDensity(0.5);
+		Circle c2 = new Circle(0.5);
+		BodyFixture c2Fixture = new BodyFixture(c2);
 		c2Fixture.setDensity(0.5);
+		Rectangle rm = new Rectangle(2.0, 1.0);
 		// translate the circles in local coordinates
-		c1Fixture.getShape().translate(-1.0, 0.0);
-		c2Fixture.getShape().translate(1.0, 0.0);
+		c1.translate(-1.0, 0.0);
+		c2.translate(1.0, 0.0);
 		SimulationBody capsule = new SimulationBody();
 		capsule.addFixture(c1Fixture);
 		capsule.addFixture(c2Fixture);
-		capsule.addFixture(Geometry.createRectangle(2, 1));
+		capsule.addFixture(rm);
 		capsule.setMass(MassType.NORMAL);
 		capsule.translate(0.0, 4.0);
 		this.world.addBody(capsule);
@@ -201,8 +157,17 @@ public class Tracking extends SimulationFrame {
 		rightTri.translate(4.0, 3.0);
 		this.world.addBody(rightTri);
 		
-		// attach the contact listener
-		this.world.addContactListener(new CustomContactListener());
+		SimulationBody cap = new SimulationBody();
+		cap.addFixture(new Capsule(1.0, 0.5));
+		cap.setMass(MassType.NORMAL);
+		cap.translate(-3.0, 3.0);
+		this.world.addBody(cap);
+		
+		SimulationBody slice = new SimulationBody();
+		slice.addFixture(new Slice(0.5, Math.toRadians(120)));
+		slice.setMass(MassType.NORMAL);
+		slice.translate(-3.0, 3.0);
+		this.world.addBody(slice);
 	}
 	
 	/**
@@ -210,7 +175,7 @@ public class Tracking extends SimulationFrame {
 	 * @param args command line arguments
 	 */
 	public static void main(String[] args) {
-		Tracking simulation = new Tracking();
+		UsingGraphics2D simulation = new UsingGraphics2D();
 		simulation.run();
 	}
 }

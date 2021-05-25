@@ -22,9 +22,10 @@
  * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package Simulation;
+package Simulation.Scene;
 
-import org.dyn4j.geometry.Convex;
+import org.dyn4j.dynamics.joint.PrismaticJoint;
+import org.dyn4j.dynamics.joint.RevoluteJoint;
 import org.dyn4j.geometry.Geometry;
 import org.dyn4j.geometry.MassType;
 import org.dyn4j.geometry.Vector2;
@@ -32,20 +33,20 @@ import Simulation.framework.SimulationBody;
 import Simulation.framework.SimulationFrame;
 
 /**
- * An example of using a "Concave" body.
+ * A scene that replicates a piston in an ICE.
  * @author William Bittle
  * @since 4.1.1
  * @version 4.1.1
  */
-public class Concave extends SimulationFrame {
+public class Crank extends SimulationFrame {
 	/** The serial version id */
-	private static final long serialVersionUID = 8797361529527319100L;
+	private static final long serialVersionUID = -602182516495632849L;
 
 	/**
 	 * Default constructor.
 	 */
-	public Concave() {
-		super("Concave", 64.0);
+	public Crank() {
+		super("Crank", 32.0);
 		
 		this.setOffsetY(-200);
 	}
@@ -54,39 +55,49 @@ public class Concave extends SimulationFrame {
 	 * @see Simulation.framework.SimulationFrame#initializeWorld()
 	 */
 	protected void initializeWorld() {
-		// Ground
 		SimulationBody ground = new SimulationBody();
-		ground.addFixture(Geometry.createRectangle(15.0, 1.0));
+		ground.addFixture(Geometry.createRectangle(10.0, 0.5));
 	    ground.setMass(MassType.INFINITE);
 	    world.addBody(ground);
 
-	    // Concave
-	    SimulationBody table = new SimulationBody();
-	    {
-	      Convex c = Geometry.createRectangle(3.0, 1.0);
-	      c.translate(new Vector2(0.0, 0.5));
-	      table.addFixture(c);
-	    }
-	    {
-	      Convex c = Geometry.createRectangle(1.0, 1.0);
-	      c.translate(new Vector2(-1.0, -0.5));
-	      table.addFixture(c);
-	    }
-	    {
-	      Convex c = Geometry.createRectangle(1.0, 1.0);
-	      c.translate(new Vector2(1.0, -0.5));
-	      table.addFixture(c);
-	    }
-	    table.translate(new Vector2(0.0, 4.0));
-	    table.setMass(MassType.NORMAL);
-	    world.addBody(table);
+	    // piston+crank
+	    
+	    SimulationBody crank = new SimulationBody();
+	    crank.addFixture(Geometry.createRectangle(0.5, 2.0), 2.0, 0.0, 0.0);
+	    crank.translate(new Vector2(0.0, 5.0));
+	    crank.setMass(MassType.NORMAL);
+	    world.addBody(crank);
 
-	    // Body3
-	    SimulationBody box = new SimulationBody();
-	    box.addFixture(Geometry.createSquare(0.5));
-	    box.translate(new Vector2(0.0, 1.0));
-	    box.setMass(MassType.NORMAL);
-	    world.addBody(box);
+	    SimulationBody rod = new SimulationBody();
+	    rod.addFixture(Geometry.createRectangle(0.5, 4.0), 2.0, 0.0, 0.0);
+	    rod.translate(new Vector2(0.0, 7.5));
+	    rod.setMass(MassType.NORMAL);
+	    world.addBody(rod);
+
+	    SimulationBody piston = new SimulationBody();
+	    piston.addFixture(Geometry.createRectangle(1.5, 1.5), 2.0, 0.0, 0.0);
+	    piston.translate(new Vector2(0.0, 9.75));
+	    piston.setMass(MassType.FIXED_ANGULAR_VELOCITY);
+	    world.addBody(piston);
+
+	    // provides the motion
+	    RevoluteJoint<SimulationBody> crankShaftJoint = new RevoluteJoint<SimulationBody>(ground, crank, new Vector2(0.0, 4.25));
+	    crankShaftJoint.setMotorEnabled(true);
+	    crankShaftJoint.setMotorSpeed(Math.toRadians(180.0));
+	    crankShaftJoint.setMaximumMotorTorque(10000.0);
+	    world.addJoint(crankShaftJoint);
+	    
+	    // links the crank to the rod
+	    RevoluteJoint<SimulationBody> crankToRodJoint = new RevoluteJoint<SimulationBody>(crank, rod, new Vector2(0.0, 5.75));
+	    world.addJoint(crankToRodJoint);
+	    
+	    // links the rod to the piston
+	    RevoluteJoint<SimulationBody> rodToPistonJoint = new RevoluteJoint<SimulationBody>(rod, piston, new Vector2(0.0, 9.25));
+	    world.addJoint(rodToPistonJoint);
+	    
+	    // keeps the piston moving along the y-axis
+	    PrismaticJoint<SimulationBody> pistonPathJoint = new PrismaticJoint<SimulationBody>(ground, piston, new Vector2(0.0, 9.75), new Vector2(0.0, 1.0));
+	    world.addJoint(pistonPathJoint);
 	}
 	
 	/**
@@ -94,7 +105,7 @@ public class Concave extends SimulationFrame {
 	 * @param args command line arguments
 	 */
 	public static void main(String[] args) {
-		Concave simulation = new Concave();
+		Crank simulation = new Crank();
 		simulation.run();
 	}
 }

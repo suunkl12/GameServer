@@ -22,7 +22,7 @@
  * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package Simulation;
+package Simulation.Scene;
 
 import java.awt.Color;
 
@@ -32,6 +32,7 @@ import org.dyn4j.geometry.Geometry;
 import org.dyn4j.geometry.MassType;
 import Simulation.framework.SimulationBody;
 import Simulation.framework.SimulationFrame;
+import org.dyn4j.geometry.Vector2;
 import org.dyn4j.world.World;
 
 /**
@@ -68,7 +69,8 @@ public final class Billiards extends SimulationFrame {
 		final double edgeDepth = 0.29 / 2.0;
 		final double tableWidth = 1.83;
 		final double tableHeight = 1.12;
-		
+		Vector2 vec2 =new Vector2(-20,0);
+                Vector2 point =new Vector2(-300,0);
 		final double halfTableWidth = tableWidth / 2.0;
 		final double halfTableHeight = tableHeight / 2.0;
 		final double halfEdgeDepth = edgeDepth / 2.0;
@@ -127,10 +129,11 @@ public final class Billiards extends SimulationFrame {
 		SimulationBody cueBall = new SimulationBody(new Color(255, 255, 255));
 		fixture = cueBall.addFixture(Geometry.createCircle(ballRadius), ballDensity, ballFriction, ballRestitution);
 		fixture.setRestitutionVelocity(0.0);
-		cueBall.translate(-0.25, 0.0);
-		cueBall.setLinearVelocity(2.0, 0.0);
+		cueBall.translate(-0.35, 0.0);
+		cueBall.setLinearVelocity(0, 0.0);
 		cueBall.setLinearDamping(0.3);
 		cueBall.setAngularDamping(0.8);
+                cueBall.applyForce(vec2, point);
 		cueBall.setMass(MassType.NORMAL);
 		this.world.addBody(cueBall);
 		

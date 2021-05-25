@@ -22,9 +22,8 @@
  * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package Simulation;
+package Simulation.Scene;
 
-import org.dyn4j.geometry.Convex;
 import org.dyn4j.geometry.Geometry;
 import org.dyn4j.geometry.MassType;
 import org.dyn4j.geometry.Vector2;
@@ -32,20 +31,20 @@ import Simulation.framework.SimulationBody;
 import Simulation.framework.SimulationFrame;
 
 /**
- * An example of using a "Concave" body.
+ * A scene where we build a Pyramid of blocks.
  * @author William Bittle
  * @since 4.1.1
  * @version 4.1.1
  */
-public class Concave extends SimulationFrame {
+public class Pyramid extends SimulationFrame {
 	/** The serial version id */
-	private static final long serialVersionUID = 8797361529527319100L;
+	private static final long serialVersionUID = -3837218136220591307L;
 
 	/**
 	 * Default constructor.
 	 */
-	public Concave() {
-		super("Concave", 64.0);
+	public Pyramid() {
+		super("Pyramid", 48.0);
 		
 		this.setOffsetY(-200);
 	}
@@ -54,39 +53,25 @@ public class Concave extends SimulationFrame {
 	 * @see Simulation.framework.SimulationFrame#initializeWorld()
 	 */
 	protected void initializeWorld() {
-		// Ground
 		SimulationBody ground = new SimulationBody();
 		ground.addFixture(Geometry.createRectangle(15.0, 1.0));
 	    ground.setMass(MassType.INFINITE);
 	    world.addBody(ground);
 
-	    // Concave
-	    SimulationBody table = new SimulationBody();
-	    {
-	      Convex c = Geometry.createRectangle(3.0, 1.0);
-	      c.translate(new Vector2(0.0, 0.5));
-	      table.addFixture(c);
+	    int ph = 15;
+	    double size = 0.5;
+	    double s = size;
+	    
+	    for (int i = 0; i < ph; i++) {
+	    	for (int j = 0; j < ph - i; j++) {
+	    		
+	    		SimulationBody b = new SimulationBody();
+			    b.addFixture(Geometry.createSquare(size), 5.0, 0.5, 0.0);
+			    b.translate(new Vector2(j * s - (ph - i) * s * 0.5, 0.5 + size / 2.0 + i * size));
+			    b.setMass(MassType.NORMAL);
+			    world.addBody(b);
+	    	}
 	    }
-	    {
-	      Convex c = Geometry.createRectangle(1.0, 1.0);
-	      c.translate(new Vector2(-1.0, -0.5));
-	      table.addFixture(c);
-	    }
-	    {
-	      Convex c = Geometry.createRectangle(1.0, 1.0);
-	      c.translate(new Vector2(1.0, -0.5));
-	      table.addFixture(c);
-	    }
-	    table.translate(new Vector2(0.0, 4.0));
-	    table.setMass(MassType.NORMAL);
-	    world.addBody(table);
-
-	    // Body3
-	    SimulationBody box = new SimulationBody();
-	    box.addFixture(Geometry.createSquare(0.5));
-	    box.translate(new Vector2(0.0, 1.0));
-	    box.setMass(MassType.NORMAL);
-	    world.addBody(box);
 	}
 	
 	/**
@@ -94,7 +79,7 @@ public class Concave extends SimulationFrame {
 	 * @param args command line arguments
 	 */
 	public static void main(String[] args) {
-		Concave simulation = new Concave();
+		Pyramid simulation = new Pyramid();
 		simulation.run();
 	}
 }

@@ -22,8 +22,10 @@
  * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package Simulation;
+package Simulation.Scene;
 
+import org.dyn4j.dynamics.BodyFixture;
+import org.dyn4j.dynamics.joint.RevoluteJoint;
 import org.dyn4j.geometry.Convex;
 import org.dyn4j.geometry.Geometry;
 import org.dyn4j.geometry.MassType;
@@ -32,61 +34,62 @@ import Simulation.framework.SimulationBody;
 import Simulation.framework.SimulationFrame;
 
 /**
- * An example of using a "Concave" body.
+ * A scene where we create a suspension bridge via RevoluteJoints.
  * @author William Bittle
- * @since 4.1.1
  * @version 4.1.1
+ * @since 4.1.1
  */
-public class Concave extends SimulationFrame {
+public class Bridge extends SimulationFrame {
 	/** The serial version id */
-	private static final long serialVersionUID = 8797361529527319100L;
+	private static final long serialVersionUID = -2350301592218819726L;
 
 	/**
 	 * Default constructor.
 	 */
-	public Concave() {
-		super("Concave", 64.0);
-		
-		this.setOffsetY(-200);
+	public Bridge() {
+		super("Bridge", 32.0);
 	}
 	
-	/* (non-Javadoc)
-	 * @see Simulation.framework.SimulationFrame#initializeWorld()
+	/**
+	 * Creates game objects and adds them to the world.
 	 */
-	protected void initializeWorld() {
+	protected void initializeWorld() {		
 		// Ground
 		SimulationBody ground = new SimulationBody();
-		ground.addFixture(Geometry.createRectangle(15.0, 1.0));
+		ground.addFixture(Geometry.createRectangle(50.0, 1.0));
+	    ground.translate(new Vector2(0.6875, -8.75));
 	    ground.setMass(MassType.INFINITE);
 	    world.addBody(ground);
 
-	    // Concave
-	    SimulationBody table = new SimulationBody();
-	    {
-	      Convex c = Geometry.createRectangle(3.0, 1.0);
-	      c.translate(new Vector2(0.0, 0.5));
-	      table.addFixture(c);
+	    final double y = 2.0;
+	    final int n = 20;
+	    final double hn = n / 2.0;
+	    final double w = 1.0;
+	    final double hw = w / 2.0;
+	    final double h = 0.25;
+	    
+	    SimulationBody prev = ground;
+	    for (int i = 0; i < n; i++) {
+	    	SimulationBody section = new SimulationBody();
+		    {// Fixture1
+		      Convex c = Geometry.createRectangle(w, h);
+		      BodyFixture bf = new BodyFixture(c);
+		      section.addFixture(bf);
+		    }
+		    section.translate(new Vector2(i - hn, y));
+		    section.setMass(MassType.NORMAL);
+		    world.addBody(section);
+		    
+		    // connect the previous body with this body
+		    RevoluteJoint<SimulationBody> rj = new RevoluteJoint<SimulationBody>(prev, section, new Vector2(i - hn - hw, y));
+		    world.addJoint(rj);
+		    
+		    prev = section;
 	    }
-	    {
-	      Convex c = Geometry.createRectangle(1.0, 1.0);
-	      c.translate(new Vector2(-1.0, -0.5));
-	      table.addFixture(c);
-	    }
-	    {
-	      Convex c = Geometry.createRectangle(1.0, 1.0);
-	      c.translate(new Vector2(1.0, -0.5));
-	      table.addFixture(c);
-	    }
-	    table.translate(new Vector2(0.0, 4.0));
-	    table.setMass(MassType.NORMAL);
-	    world.addBody(table);
-
-	    // Body3
-	    SimulationBody box = new SimulationBody();
-	    box.addFixture(Geometry.createSquare(0.5));
-	    box.translate(new Vector2(0.0, 1.0));
-	    box.setMass(MassType.NORMAL);
-	    world.addBody(box);
+	    
+	    // connect the last body with the ground
+	    RevoluteJoint<SimulationBody> rj = new RevoluteJoint<SimulationBody>(prev, ground, new Vector2(hn + hw, y));
+	    world.addJoint(rj);
 	}
 	
 	/**
@@ -94,7 +97,7 @@ public class Concave extends SimulationFrame {
 	 * @param args command line arguments
 	 */
 	public static void main(String[] args) {
-		Concave simulation = new Concave();
+		Bridge simulation = new Bridge();
 		simulation.run();
 	}
 }

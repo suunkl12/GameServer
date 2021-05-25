@@ -22,7 +22,9 @@
  * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package Simulation;
+package Simulation.Scene;
+
+import java.util.Random;
 
 import org.dyn4j.geometry.Convex;
 import org.dyn4j.geometry.Geometry;
@@ -32,61 +34,79 @@ import Simulation.framework.SimulationBody;
 import Simulation.framework.SimulationFrame;
 
 /**
- * An example of using a "Concave" body.
+ * A scene where we fill a "bucket" with shapes.
  * @author William Bittle
  * @since 4.1.1
  * @version 4.1.1
  */
-public class Concave extends SimulationFrame {
+public class Bucket extends SimulationFrame {
 	/** The serial version id */
-	private static final long serialVersionUID = 8797361529527319100L;
+	private static final long serialVersionUID = -3837218136220591307L;
 
 	/**
 	 * Default constructor.
 	 */
-	public Concave() {
-		super("Concave", 64.0);
-		
-		this.setOffsetY(-200);
+	public Bucket() {
+		super("Bucket", 32.0);
 	}
 	
-	/* (non-Javadoc)
-	 * @see Simulation.framework.SimulationFrame#initializeWorld()
+	/**
+	 * Creates game objects and adds them to the world.
 	 */
 	protected void initializeWorld() {
-		// Ground
-		SimulationBody ground = new SimulationBody();
-		ground.addFixture(Geometry.createRectangle(15.0, 1.0));
-	    ground.setMass(MassType.INFINITE);
-	    world.addBody(ground);
+	    // Bottom
+		SimulationBody bucketBottom = new SimulationBody();
+		bucketBottom.addFixture(Geometry.createRectangle(15.0, 1.0));
+	    bucketBottom.setMass(MassType.INFINITE);
+	    world.addBody(bucketBottom);
 
-	    // Concave
-	    SimulationBody table = new SimulationBody();
-	    {
-	      Convex c = Geometry.createRectangle(3.0, 1.0);
-	      c.translate(new Vector2(0.0, 0.5));
-	      table.addFixture(c);
-	    }
-	    {
-	      Convex c = Geometry.createRectangle(1.0, 1.0);
-	      c.translate(new Vector2(-1.0, -0.5));
-	      table.addFixture(c);
-	    }
-	    {
-	      Convex c = Geometry.createRectangle(1.0, 1.0);
-	      c.translate(new Vector2(1.0, -0.5));
-	      table.addFixture(c);
-	    }
-	    table.translate(new Vector2(0.0, 4.0));
-	    table.setMass(MassType.NORMAL);
-	    world.addBody(table);
+	    // Left-Side
+	    SimulationBody bucketLeft = new SimulationBody();
+	    bucketLeft.addFixture(Geometry.createRectangle(1.0, 15.0));
+	    bucketLeft.translate(new Vector2(-7.5, 7.0));
+	    bucketLeft.setMass(MassType.INFINITE);
+	    world.addBody(bucketLeft);
 
-	    // Body3
-	    SimulationBody box = new SimulationBody();
-	    box.addFixture(Geometry.createSquare(0.5));
-	    box.translate(new Vector2(0.0, 1.0));
-	    box.setMass(MassType.NORMAL);
-	    world.addBody(box);
+	    // Right-Side
+	    SimulationBody bucketRight = new SimulationBody();
+	    bucketRight.addFixture(Geometry.createRectangle(1.0, 15.0));
+	    bucketRight.translate(new Vector2(7.5, 7.0));
+	    bucketRight.setMass(MassType.INFINITE);
+	    world.addBody(bucketRight);
+
+	    Random r = new Random(23);
+	    double xmin = -7.0;
+	    double xmax = 7.0;
+	    double ymin = 0.5;
+	    double ymax = 7.0;
+	    double maxSize = 0.6;
+	    double minSize = 0.2;
+	    
+	    for (int i = 0; i < 200; i++) {
+	    	double size = r.nextDouble() * maxSize + minSize;
+	    	
+	    	Convex c = null;
+	    	
+	    	int type = r.nextInt(2);
+	    	switch (type) {
+		    	case 0:
+		    		c = Geometry.createRectangle(size, size);
+		    		break;
+		    	case 1:
+	    		default:
+		    		c = Geometry.createCircle(size * 0.5);
+		    		break;
+	    	}
+	    	
+	    	double x = r.nextDouble() * xmax * 2 + xmin;
+	    	double y = r.nextDouble() * ymax + ymin;
+	    	
+		    SimulationBody b = new SimulationBody();
+		    b.addFixture(c);
+		    b.translate(new Vector2(x, y));
+		    b.setMass(MassType.NORMAL);
+		    world.addBody(b);
+	    }
 	}
 	
 	/**
@@ -94,7 +114,7 @@ public class Concave extends SimulationFrame {
 	 * @param args command line arguments
 	 */
 	public static void main(String[] args) {
-		Concave simulation = new Concave();
+		Bucket simulation = new Bucket();
 		simulation.run();
 	}
 }

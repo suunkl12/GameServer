@@ -107,7 +107,7 @@ public class CodeExporter {
 	 * <p>
 	 * Returns a string containing the code for the export.
 	 * @param name the name of the generated class
-	 * @param simulation the simulation to export
+	 * @param Simulation the Simulation to export
 	 * @return String
 	 */
 	public static final String export(String name, World<?> world) {

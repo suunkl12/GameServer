@@ -22,79 +22,77 @@
  * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package Simulation;
+package Simulation.Scene;
 
-import org.dyn4j.geometry.Convex;
+import java.util.List;
+
+import org.dyn4j.collision.narrowphase.Sat;
 import org.dyn4j.geometry.Geometry;
+import org.dyn4j.geometry.Link;
 import org.dyn4j.geometry.MassType;
 import org.dyn4j.geometry.Vector2;
 import Simulation.framework.SimulationBody;
 import Simulation.framework.SimulationFrame;
 
 /**
- * An example of using a "Concave" body.
+ * A simple scene of a terrain made using the {@link Link}s to avoid
+ * the internal edge collision problem.
  * @author William Bittle
- * @since 4.1.1
- * @version 4.1.1
+ * @version 4.2.0
+ * @since 3.2.2
  */
-public class Concave extends SimulationFrame {
+public class LinkTerrain extends SimulationFrame {
 	/** The serial version id */
-	private static final long serialVersionUID = 8797361529527319100L;
+	private static final long serialVersionUID = -3675099977835892473L;
 
 	/**
-	 * Default constructor.
+	 * Default constructor for the window
 	 */
-	public Concave() {
-		super("Concave", 64.0);
+	public LinkTerrain() {
+		super("LinkTerrain", 64.0);
 		
-		this.setOffsetY(-200);
+		this.pause();
 	}
 	
-	/* (non-Javadoc)
-	 * @see Simulation.framework.SimulationFrame#initializeWorld()
+	/**
+	 * Creates game objects and adds them to the world.
 	 */
 	protected void initializeWorld() {
-		// Ground
-		SimulationBody ground = new SimulationBody();
-		ground.addFixture(Geometry.createRectangle(15.0, 1.0));
-	    ground.setMass(MassType.INFINITE);
-	    world.addBody(ground);
-
-	    // Concave
-	    SimulationBody table = new SimulationBody();
-	    {
-	      Convex c = Geometry.createRectangle(3.0, 1.0);
-	      c.translate(new Vector2(0.0, 0.5));
-	      table.addFixture(c);
-	    }
-	    {
-	      Convex c = Geometry.createRectangle(1.0, 1.0);
-	      c.translate(new Vector2(-1.0, -0.5));
-	      table.addFixture(c);
-	    }
-	    {
-	      Convex c = Geometry.createRectangle(1.0, 1.0);
-	      c.translate(new Vector2(1.0, -0.5));
-	      table.addFixture(c);
-	    }
-	    table.translate(new Vector2(0.0, 4.0));
-	    table.setMass(MassType.NORMAL);
-	    world.addBody(table);
-
-	    // Body3
-	    SimulationBody box = new SimulationBody();
-	    box.addFixture(Geometry.createSquare(0.5));
-	    box.translate(new Vector2(0.0, 1.0));
-	    box.setMass(MassType.NORMAL);
-	    world.addBody(box);
+		this.world.setNarrowphaseDetector(new Sat());
+		
+		// the terrain
+		List<Link> links = Geometry.createLinks(
+			new Vector2[] {
+				new Vector2( 6.0, -0.5),
+				new Vector2( 4.5,  0.3),
+				new Vector2( 4.0,  0.2),
+				new Vector2( 2.0,  0.0),
+				new Vector2( 0.0,  0.0),
+				new Vector2(-6.0,  0.5)
+			}, false);
+		
+		SimulationBody floor = new SimulationBody();
+		for (Link link : links) {
+			floor.addFixture(link);
+		}
+		floor.setMass(MassType.INFINITE);
+		this.world.addBody(floor);
+		
+		// the body
+		SimulationBody slider = new SimulationBody();
+		slider.addFixture(Geometry.createSquare(0.25));
+		slider.setMass(MassType.NORMAL);
+		slider.setLinearVelocity(6.2, 0);
+		slider.translate(-5.5, 1.0);
+		this.world.addBody(slider);
 	}
-	
+
 	/**
 	 * Entry point for the example application.
 	 * @param args command line arguments
 	 */
 	public static void main(String[] args) {
-		Concave simulation = new Concave();
+		LinkTerrain simulation = new LinkTerrain();
 		simulation.run();
 	}
 }
