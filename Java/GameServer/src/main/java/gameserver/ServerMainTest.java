@@ -17,6 +17,7 @@ import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -114,7 +115,7 @@ public class ServerMainTest {
             ServerBootstrap b = new ServerBootstrap();
             b.group(group)
                     .channel(NioServerSocketChannel.class)
-                    .localAddress(new InetSocketAddress(port))
+                    //.localAddress(new InetSocketAddress(port))
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         public void initChannel(SocketChannel ch)
@@ -130,38 +131,40 @@ public class ServerMainTest {
                             
                             do
                             {
-                            // set gun to random
-                            int i = r.ints(0, gunPositions.size() - 1).findFirst().getAsInt() ; 
-                            if (!gunPositions.get(i).getIsUsed())
-                            {
-                                Rotation rot = new Rotation();
-                                
-                                //2 and 3 are gun indexes on the top
-                                if(i==2 || i==3){
-                                    rot.z = 180f;
+                                // set gun to random
+                                int i = r.ints(0, gunPositions.size() - 1).findFirst().getAsInt() ; 
+                                if (!gunPositions.get(i).getIsUsed())
+                                {
+                                    Rotation rot = new Rotation();
+
+                                    //2 and 3 are gun indexes on the top
+                                    if(i==2 || i==3){
+                                        rot.z = 180f;
+                                    }
+
+                                    gunPositions.get(i).setIsUsed(true);
+                                    System.out.println("You are in slotGun: " + i);
+                                    p = new Player(id,gunPositions.get(i).getGunPosition() , rot);
+
+                                    p.gunIndex = i;
+                                    break;
                                 }
-                                
-                                gunPositions.get(i).setIsUsed(true);
-                                System.out.println("You are in slotGun: " + i);
-                                p = new Player(id,gunPositions.get(i).getGunPosition() , rot);
-                                
-                                p.gunIndex = i;
-                                break;
-                            }
-                            
                             } while (true);
                             
                             final EchoServerHandler serverHandler = new EchoServerHandler(p);
                             
                             //Gán handler cho player
                             p.setHandler(serverHandler);
-                            
                             //Lưu trữ player để gửi thông điệp
                             players.put(id, p);
+                            
                             ch.pipeline().addLast(serverHandler);
                             
                         }
-                    });
+                    })
+                    .childOption(ChannelOption.SO_KEEPALIVE, true)
+                    .childOption(ChannelOption.TCP_NODELAY, true)
+                    .bind(port).sync().channel().closeFuture().sync();;
             
             
             ChannelFuture f = b.bind().sync();

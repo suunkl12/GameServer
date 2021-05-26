@@ -8,7 +8,7 @@ package gameserver.managers;
 import gameserver.physics.BanCaPhysics;
 
 /**
- *
+ * Manager dùng để sync vị trí các object trong game
  * @author Khang
  */
 public class MapManager {

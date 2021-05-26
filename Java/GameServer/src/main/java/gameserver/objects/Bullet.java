@@ -8,6 +8,7 @@ package gameserver.objects;
 import java.util.concurrent.ScheduledExecutorService;
 import Simulation.framework.*;
 import gameserver.ServerMainTest;
+import gameserver.physics.BanCaPhysics;
 import gameserver.utils.Utils;
 import gameserver.utils.Vector2;
 import java.awt.Color;
@@ -45,7 +46,8 @@ public class Bullet extends GameObject {
         b.addFixture(bf);
         b.setMass(MassType.NORMAL);
         org.dyn4j.geometry.Vector2 g = Utils.degreesToVector2(rotation);
-        b.translate(getPosition().x + g.x, getPosition().y + g.y);
+        
+        b.translate(getPosition().x  + g.x, getPosition().y + g.y);
         b.applyForce(Utils.multiply(g, ServerMainTest.BULLET_SPEED));
         
         

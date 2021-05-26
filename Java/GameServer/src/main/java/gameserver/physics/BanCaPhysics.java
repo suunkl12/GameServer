@@ -25,14 +25,16 @@ import org.dyn4j.world.World;
  * @author Khang
  */
 public class BanCaPhysics extends SimulationFrame {
-    
+        public static volatile double wideMultipler = 1920/7;
+        public static volatile double heightMultipler = 1080/7;
+        
         private class CustomEventKeyListener  extends KeyAdapter{
 
         @Override
         public void keyPressed(KeyEvent e) {
             switch (e.getKeyCode()){
                 case KeyEvent.VK_A:
-                    Bullet b =  new Bullet(1, new Vector2(0, 0),20);
+                    Bullet b =  new Bullet(1, new Vector2(0, 0),-90);
                     break;
                 }
             }
@@ -48,8 +50,9 @@ public class BanCaPhysics extends SimulationFrame {
             g.setColor(Color.BLACK);
             final double scale = this.getScale();
 
-            final double multipler = 100;
-            g.draw(new Rectangle2D.Double(-scale*multipler/2, -scale*multipler/2, scale*multipler, scale*multipler) );
+            // chỉnh độ phân giải màn hình
+            
+            g.draw(new Rectangle2D.Double(-scale*wideMultipler/2, -scale*heightMultipler/2, scale*wideMultipler, scale*heightMultipler) );
             // g.draw(new Rectangle2D.Double(-50, -50, 100, 100) );
         }
 
