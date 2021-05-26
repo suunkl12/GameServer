@@ -40,6 +40,21 @@ public class Utils {
 
     }
     
+    public static org.dyn4j.geometry.Vector2 multiply(org.dyn4j.geometry.Vector2 v, float m){
+
+        v.x *= m;
+        v.y *= m;
+        return v;
+
+    }
+    
+    public static org.dyn4j.geometry.Vector2 degreesToVector2(float degrees){
+
+        float radians = (float) Math.toRadians(degrees);
+        return new org.dyn4j.geometry.Vector2(Math.cos(radians), Math.sin(radians));
+
+    }
+    
     public static Packet messageToPacket(HotMessage.Packet o, Player p){
         if(!ServerMainTest.packets.containsKey(o.getId())) return null;
 

@@ -14,7 +14,7 @@ import java.util.List;
 
 public class Ider{
 
-    private List<Integer> dump = new ArrayList<>();
+    private volatile List<Integer> dump = new ArrayList<>();
     private Integer id = 0;
 
     public Integer next(){

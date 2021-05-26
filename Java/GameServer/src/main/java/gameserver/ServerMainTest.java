@@ -6,8 +6,10 @@
 package gameserver;
 
 import egroup.gameserver.Position;
+import gameserver.managers.MapManager;
 import gameserver.objects.Player;
 import gameserver.packets.*;
+import gameserver.physics.BanCaPhysics;
 import gameserver.utils.GunSlot;
 import gameserver.utils.Rotation;
 import gameserver.utils.Vector2;
@@ -29,6 +31,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -36,9 +40,12 @@ import java.util.Random;
  */
 public class ServerMainTest {
 
+    public static final Float BULLET_SPEED = 100f;
+    
     public static int TIMEOUT = 5000;
     public static int MaxPlayer = 4;
     private final int port ;
+    
     
     public static HashMap<Integer, Class<? extends Packet>> packets = new HashMap<Integer, Class<? extends Packet>>(){{
 
@@ -58,6 +65,8 @@ public class ServerMainTest {
     
     public static HashMap<Integer, Player> players = new HashMap<>();
     public static HashMap<ChannelHandlerContext, EchoServerHandler> handlers = new HashMap<>();
+    
+    public static MapManager mapManager;
     
     public static List<GunSlot> gunPositions = new ArrayList<>(
             Arrays.asList(
@@ -83,10 +92,22 @@ public class ServerMainTest {
         else{        
             port = Integer.parseInt(args[0]);
         }
-        new ServerMainTest(port).start();
+        ServerMainTest newServer = new ServerMainTest(port);
+        
+        mapManager = new MapManager();
+        
+        
+        
+        BanCaPhysics simulation = new BanCaPhysics();
+        
+        mapManager.setGameMap(simulation);
+        
+        new Thread(simulation::run).start();
+        
+        new Thread(newServer::start).start();
     }
 
-    public void start() throws Exception {
+    public void start() {
         
         EventLoopGroup group = new NioEventLoopGroup();
         try {
@@ -145,10 +166,17 @@ public class ServerMainTest {
             
             ChannelFuture f = b.bind().sync();
             f.channel().closeFuture().sync();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ServerMainTest.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            group.shutdownGracefully().sync();
+            try {
+                group.shutdownGracefully().sync();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ServerMainTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
+    
     
     
 }

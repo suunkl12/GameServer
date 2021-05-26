@@ -62,6 +62,8 @@ import Simulation.framework.input.CodeExporter;
 import Simulation.framework.input.MousePanningInputHandler;
 import Simulation.framework.input.MousePickingInputHandler;
 import Simulation.framework.input.MouseZoomInputHandler;
+import java.util.ArrayList;
+import java.util.List;
 import org.dyn4j.world.World;
 import org.dyn4j.world.WorldCollisionData;
 
@@ -304,6 +306,9 @@ public abstract class SimulationFrame extends JFrame {
 		// Sync the display on some systems.
         // (on Linux, this fixes event queue problems)
         Toolkit.getDefaultToolkit().sync();
+                            
+                           //Custom function
+                           executeQueue();
 	}
 
 	/**
@@ -750,4 +755,30 @@ public abstract class SimulationFrame extends JFrame {
 		// start it
 		this.start();
 	}
+        
+        
+        //<editor-fold defaultstate="collapsed" desc="Custom code">
+        private List<Runnable> runnables = new ArrayList<>();
+        
+        public void addInQueue(Runnable r){
+            
+            runnables.add(r);
+            
+        }
+        
+        private void executeQueue(){
+            
+            for(Runnable r : runnables){
+                
+                try{
+                    
+                    r.run();
+                    
+                }catch(Exception e){}
+                
+            }
+            
+            runnables.clear();
+        }
+//</editor-fold>
 }
