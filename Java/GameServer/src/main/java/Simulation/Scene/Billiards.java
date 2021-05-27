@@ -55,7 +55,6 @@ public final class Billiards extends SimulationFrame {
 	public Billiards() {
 		super("Billiards", 250.0);
 	}
-	
 	/* (non-Javadoc)
 	 * @see Simulation.SimulationFrame#initializeWorld()
 	 */
