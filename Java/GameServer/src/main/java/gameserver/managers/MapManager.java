@@ -14,7 +14,7 @@ import gameserver.physics.BanCaPhysics;
 public class MapManager {
     
     
-    BanCaPhysics gameMap;
+    volatile BanCaPhysics gameMap;
 
     public BanCaPhysics getGameMap() {
         return gameMap;

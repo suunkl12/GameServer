@@ -67,7 +67,7 @@ public class ServerMainTest {
     public static HashMap<Integer, Player> players = new HashMap<>();
     public static HashMap<ChannelHandlerContext, EchoServerHandler> handlers = new HashMap<>();
     
-    public static MapManager mapManager;
+    public static  MapManager mapManager;
     
     public static List<GunSlot> gunPositions = new ArrayList<>(
             Arrays.asList(

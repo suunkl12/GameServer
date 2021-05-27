@@ -25,8 +25,8 @@ import org.dyn4j.world.World;
  * @author Khang
  */
 public class BanCaPhysics extends SimulationFrame {
-        public static volatile double wideMultipler = 1920/7;
-        public static volatile double heightMultipler = 1080/7;
+        public static final double wideMultipler = 1920/7;
+        public static final double heightMultipler = 1080/7;
         
         private class CustomEventKeyListener  extends KeyAdapter{
 
