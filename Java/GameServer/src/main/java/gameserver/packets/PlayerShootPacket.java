@@ -7,6 +7,7 @@ package gameserver.packets;
 
 import gameserver.HotMessage;
 import gameserver.ServerMainTest;
+import gameserver.enums.ObjectType;
 import gameserver.objects.Bullet;
 import gameserver.objects.Player;
 import gameserver.utils.Rotation;
@@ -57,6 +58,7 @@ public class PlayerShootPacket extends Packet{
             //Sau khi nhận được packet này, client mới bắt đầu bắn đạn
             //System.out.println("Sending player " + p.getId() + " shoot command");
             Utils.packetInstance(PlayerShootPacket.class, p).write(objects.toArray());
+            
             
         }
         

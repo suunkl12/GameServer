@@ -84,6 +84,10 @@ public class BanCaPhysics extends SimulationFrame {
         public void removeBody(SimulationBody body){
             this.world.removeBody(body);
         }
+        
+        public World<SimulationBody> getWorld(){
+            return world;
+        }
 }
         
         

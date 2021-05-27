@@ -12,7 +12,7 @@ import gameserver.objects.*;
  * @author Khang
  */
 public enum ObjectType {
-    DESTRUCTIBLE, INDESTRUCTIBLE, ITEM, PLAYER, BULLET, NONE;
+    FISH, INDESTRUCTIBLE, ITEM, PLAYER, BULLET, NONE;
 
     public static ObjectType fromString(String s){
 
@@ -25,7 +25,10 @@ public enum ObjectType {
 
 
         if (go instanceof Player) return ObjectType.PLAYER;
-        else return ObjectType.NONE;
+        
+        if (go instanceof Bullet) return ObjectType.BULLET;
+        
+        return ObjectType.NONE;
 
     }
 

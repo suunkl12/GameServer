@@ -53,7 +53,7 @@ public class ServerMainTest {
         //put(1, PingPacket.class);
         put(2, PlayerSpawnPacket.class);
         put(3, ClientInfoPacket.class);
-        //put(4, ObjectSpawnPacket.class);
+        put(4, ObjectSpawnPacket.class);
         //put(5, PlayerMovePacket.class);
         put(6, PlayerShootPacket.class);
         put(7, ObjectDespawnPacket.class);
