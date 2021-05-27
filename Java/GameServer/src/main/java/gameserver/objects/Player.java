@@ -27,6 +27,9 @@ public class Player extends GameObject{
     private EchoServerHandler h;
     public int gunIndex;
     
+    private final long SHOOT_COOLDOWN = 400;
+    private volatile long currentTime = 0;
+    
     private ScheduledExecutorService e;
     
     
@@ -60,6 +63,9 @@ public class Player extends GameObject{
     
     
     
+    //Vẽ viên đạn trên map simulation
+        
+    
     public Player(Integer id, Vector2 position) {
         super(id, position);
     }
@@ -74,4 +80,13 @@ public class Player extends GameObject{
     public void setHandler(EchoServerHandler h){
         this.h = h;
     }
+    
+    public  void Shoot(float rotation){
+        if(System.currentTimeMillis() < currentTime + SHOOT_COOLDOWN ) return;
+        
+        new Bullet(1,getPosition(), rotation+ 90);
+        
+        currentTime = System.currentTimeMillis();
+    }
+    
 }

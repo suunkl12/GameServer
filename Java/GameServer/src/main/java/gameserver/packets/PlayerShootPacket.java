@@ -50,8 +50,7 @@ public class PlayerShootPacket extends Packet{
         //Set rotation của player giống với rotation của client
         getPlayer().setRotation(new Rotation((float)objects.get(1), 0));
         
-        //Vẽ viên đạn trên map simulation
-        Bullet b = new Bullet(1, getPlayer().getPosition(), (float)objects.get(1) + 90);
+        getPlayer().Shoot((float)objects.get(1));
         
         for(Player p : ServerMainTest.players.values()){
             //Truyền đến tất cả người chơi khác là người chơi này bắn, kể cả người bắn,
