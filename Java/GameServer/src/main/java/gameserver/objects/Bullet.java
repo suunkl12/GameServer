@@ -54,6 +54,7 @@ public class Bullet extends GameObject {
         ServerMainTest.mapManager.getGameMap().addBody(b);
 
         e = Executors.newSingleThreadScheduledExecutor();
+        
         e.schedule(() -> ServerMainTest.mapManager.getGameMap().addInQueue(this::dispose), 1000, TimeUnit.MILLISECONDS);
 
     }

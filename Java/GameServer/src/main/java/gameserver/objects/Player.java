@@ -8,6 +8,8 @@ package gameserver.objects;
 import gameserver.utils.Rotation;
 import gameserver.EchoServerHandler;
 import gameserver.ServerMainTest;
+import gameserver.enums.ObjectType;
+import gameserver.packets.ObjectSpawnPacket;
 import gameserver.utils.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,6 +87,19 @@ public class Player extends GameObject{
         if(System.currentTimeMillis() < currentTime + SHOOT_COOLDOWN ) return;
         
         new Bullet(1,getPosition(), rotation+ 90);
+        
+        for( Player p : ServerMainTest.players.values()){
+            //TODO: change the bullet ID
+            Utils.packetInstance(ObjectSpawnPacket.class, p).write(
+                    1 // ID
+                    , ObjectType.BULLET // object type
+                    ,"" // fish type
+                    ,getPosition().x
+                    ,getPosition().y
+                    ,getRotation().z
+                    ,0); 
+        }
+        
         
         currentTime = System.currentTimeMillis();
     }

@@ -7,7 +7,8 @@ package gameserver.utils;
 
 import gameserver.HotMessage;
 import gameserver.ServerMainTest;
-import gameserver.objects.Player;
+import gameserver.enums.ObjectType;
+import gameserver.objects.*;
 import gameserver.packets.Packet;
 import java.util.ArrayList;
 import java.util.List;
@@ -121,6 +122,18 @@ public class Utils {
         }
 
         return sb.toString();
+    }
+    
+    public static String getType(GameObject go, ObjectType ot){
+
+        switch(ot){
+
+            case FISH:
+                return ((Fish) go).getType().toString();
+            default:
+                return "";
+        }
+
     }
     
     /** 
