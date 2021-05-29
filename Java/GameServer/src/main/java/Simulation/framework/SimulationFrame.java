@@ -760,13 +760,13 @@ public abstract class SimulationFrame extends JFrame {
         //<editor-fold defaultstate="collapsed" desc="Custom code">
         private List<Runnable> runnables = new ArrayList<>();
         
-        public void addInQueue(Runnable r){
+        public synchronized void addInQueue(Runnable r){
             
             runnables.add(r);
             
         }
         
-        private void executeQueue(){
+        private synchronized void executeQueue(){
             
             for(Runnable r : runnables){
                 

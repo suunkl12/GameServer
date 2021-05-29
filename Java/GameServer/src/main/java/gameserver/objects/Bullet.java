@@ -8,7 +8,10 @@ package gameserver.objects;
 import java.util.concurrent.ScheduledExecutorService;
 import Simulation.framework.*;
 import gameserver.ServerMainTest;
-import gameserver.physics.BanCaPhysics;
+import gameserver.enums.ObjectType;
+import gameserver.packets.ObjectDespawnPacket;
+import gameserver.packets.ObjectMovePacket;
+import gameserver.utils.Ider;
 import gameserver.utils.Utils;
 import gameserver.utils.Vector2;
 import java.awt.Color;
@@ -24,6 +27,8 @@ import org.dyn4j.geometry.MassType;
  */
 public class Bullet extends GameObject {
 
+    
+    public static Ider bulletIder = new Ider();
     private float rotation;
     private ScheduledExecutorService e;
 
@@ -39,7 +44,7 @@ public class Bullet extends GameObject {
     private void spawn(){
 
         b = new SimulationBody(Color.BLACK);
-        BodyFixture bf = new BodyFixture(Geometry.createRectangle(0.1295, 0.1295));
+        BodyFixture bf = new BodyFixture(Geometry.createRectangle(0.01295, 0.01295));
 
         bf.setSensor(true);
         bf.setUserData(this);
@@ -47,7 +52,7 @@ public class Bullet extends GameObject {
         b.setMass(MassType.NORMAL);
         org.dyn4j.geometry.Vector2 g = Utils.degreesToVector2(rotation);
         
-        b.translate(getPosition().x  + g.x, getPosition().y + g.y);
+        b.translate(getPosition().x+ g.x, getPosition().y  + g.y);
         b.applyForce(Utils.multiply(g, ServerMainTest.BULLET_SPEED));
         
         
@@ -55,19 +60,43 @@ public class Bullet extends GameObject {
 
         e = Executors.newSingleThreadScheduledExecutor();
         
-        e.schedule(() -> ServerMainTest.mapManager.getGameMap().addInQueue(this::dispose), 1000, TimeUnit.MILLISECONDS);
+        
+        e.scheduleAtFixedRate(()->ServerMainTest.mapManager.getGameMap().addInQueue(this::sendAndSetBulletCord), 0, 16, TimeUnit.MILLISECONDS) ;
+        e.schedule(() -> ServerMainTest.mapManager.getGameMap().addInQueue(this::dispose), 2000, TimeUnit.MILLISECONDS);
 
     }
 
-    public void dispose(){
+    public synchronized void dispose(){
 
         if (b != null && b.getFixtureCount() > 0) {
             b.removeAllFixtures();
+            bulletIder.returnBackID(getId());
+            
             ServerMainTest.mapManager.getGameMap().removeBody(b);
+            ServerMainTest.mapManager.bullets.remove(getId());
+            
+            //TODO: send to clients to delete object
+            for (Player p : ServerMainTest.players.values())
+            {
+                Utils.packetInstance(ObjectDespawnPacket.class , p).write(this.getId(),ObjectType.BULLET);
+            }
+            
         }
 
         if(e != null && !e.isShutdown()) e.shutdown();
 
+    }
+    
+    public void sendAndSetBulletCord(){
+        
+        org.dyn4j.geometry.Vector2 bullet = b.getTransform().getTranslation();
+        
+        setPosition(new Vector2((float)bullet.x, (float)bullet.y));
+        
+        for (Player p : ServerMainTest.players.values())
+        {
+            Utils.packetInstance(ObjectMovePacket.class, p).write(this.getId(),ObjectType.BULLET,(float)bullet.x, (float)bullet.y,0f);
+        }
     }
 
 

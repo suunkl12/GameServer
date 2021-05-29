@@ -44,7 +44,7 @@ public class PlayerShootPacket extends Packet{
         
         //Check xem trong số player có Id của người chơi này không
         if (!ServerMainTest.players.containsKey((int)objects.get(0))
-                || objects.get(0) != getPlayer().getId()) //Check xem player truyên vào packet có id giống vớ playeri id của packet không
+                || objects.get(0) != getPlayer().getId()) //Check xem player truyên vào packet có id giống với player id của packet không
             return; // nếu không thì return
         
         

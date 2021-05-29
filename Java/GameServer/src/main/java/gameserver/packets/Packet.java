@@ -60,7 +60,7 @@ public abstract class Packet {
     public enum Type {
         PING(1), PLAYER_SPAWN(2), CLIENT_INFO(3), OBJECT_SPAWN(4),
         PLAYER_MOVE(5), PLAYER_SHOT(6), OBJECT_DESPAWN(7), PLAYER_INFO(8),
-        CIRCLE_INFO(9), PLAYER_PICKUP(10), OBJECT_INFO(11);
+        CIRCLE_INFO(9), PLAYER_PICKUP(10), OBJECT_INFO(11),OBJECT_MOVE(12);
 
         private Integer i;
 

@@ -7,7 +7,7 @@ package gameserver;
 
 import egroup.gameserver.Position;
 import gameserver.managers.MapManager;
-import gameserver.objects.Player;
+import gameserver.objects.*;
 import gameserver.packets.*;
 import gameserver.physics.BanCaPhysics;
 import gameserver.utils.GunSlot;
@@ -41,7 +41,7 @@ import java.util.logging.Logger;
  */
 public class ServerMainTest {
 
-    public static final Float BULLET_SPEED = 100f;
+    public static final Float BULLET_SPEED = 0.1f;
     
     public static int TIMEOUT = 5000;
     public static int MaxPlayer = 4;
@@ -65,6 +65,7 @@ public class ServerMainTest {
     }};
     
     public static HashMap<Integer, Player> players = new HashMap<>();
+    
     public static HashMap<ChannelHandlerContext, EchoServerHandler> handlers = new HashMap<>();
     
     public static  MapManager mapManager;

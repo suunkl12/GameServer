@@ -46,13 +46,16 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
         //p là người dùng mà nó sẽ gửi đến, mỗi player có một Handler mà Utils sẽ gán cho packet để gửi thông tin
         Utils.packetInstance(ClientInfoPacket.class,p).write(p.getId(),0);
         
+        //onConncect sẽ gửi thông tìn về tất cả các vật thể non-player trong game, bao gồm đạn và cá
+        ServerMainTest.mapManager.onConnect(p);
+        
         // PLAYERS
          for (Player o: ServerMainTest.players.values ()) {
 
              // SENDING EVERYONE ABOUT THE NEW PLAYER'S SPAWN
              Utils.packetInstance (PlayerSpawnPacket.class, o) .write (p.getId (), p.getPosition ().x, p.getPosition ().y, p.getRotation ().z, p.getRotation ().w);
 
-             // SENDING THE NEW PLAYER ABOUT OTHER PLAYERS  THAN YOURSELF (packet above is sent)
+             // SENDING THE NEW PLAYER INFO OF OTHER PLAYERS  THAN YOURSELF (packet above is sent)
              if (o == p) continue;
 
              Utils.packetInstance (PlayerSpawnPacket.class, p) .write (o.getId (), o.getPosition ().x, o.getPosition ().y, o.getRotation ().z, o.getRotation ().w);
@@ -95,7 +98,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
          System.out.println ("Player " + p.getId () + " disconnected from the server!");
          
          
-         //Despawn tất cả người chơi cho người chơi này, bởi vì người chơi này disconnect
+         //Despawn người chơi này cho tất cả người chơi còn lại, bởi vì người chơi này disconnect
          for(Player p : ServerMainTest.players.values()){
 
             Utils.packetInstance(ObjectDespawnPacket.class, p).write(this.p.getId(), ObjectType.PLAYER);
@@ -105,7 +108,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
         ServerMainTest.gunPositions.get(p.gunIndex).setIsUsed(false);
         ServerMainTest.handlers.remove(ctx);
         ServerMainTest.players.remove(p.getId());
-        Player.ider.add(p.getId());
+        Player.ider.returnBackID(p.getId());
     }
     
     @Override

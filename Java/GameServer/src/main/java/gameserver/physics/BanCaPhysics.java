@@ -25,8 +25,8 @@ import org.dyn4j.world.World;
  * @author Khang
  */
 public class BanCaPhysics extends SimulationFrame {
-        public static final double wideMultipler = 1920/7;
-        public static final double heightMultipler = 1080/7;
+        public static final double wideMultipler = 1920*8;
+        public static final double heightMultipler = 1080*8;
         
         private class CustomEventKeyListener  extends KeyAdapter{
 
@@ -39,7 +39,8 @@ public class BanCaPhysics extends SimulationFrame {
                 }
             }
         }
-    
+
+        
         
         
         @Override
@@ -52,7 +53,7 @@ public class BanCaPhysics extends SimulationFrame {
 
             // chỉnh độ phân giải màn hình
             
-            g.draw(new Rectangle2D.Double(-scale*wideMultipler/2, -scale*heightMultipler/2, scale*wideMultipler, scale*heightMultipler) );
+            g.draw(new Rectangle2D.Double(-wideMultipler/scale/2, -heightMultipler/scale/2, wideMultipler/scale, heightMultipler/scale) );
             // g.draw(new Rectangle2D.Double(-50, -50, 100, 100) );
         }
 
@@ -60,7 +61,7 @@ public class BanCaPhysics extends SimulationFrame {
         * Default constructor.
         */
         public BanCaPhysics() {
-               super("BanCa", 1.0);
+               super("BanCa", 32.0);
                
                CustomEventKeyListener keyListener = new CustomEventKeyListener();
                this.addKeyListener(keyListener);

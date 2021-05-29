@@ -83,15 +83,19 @@ public class Player extends GameObject{
         this.h = h;
     }
     
-    public  void Shoot(float rotation){
+    public synchronized  void Shoot(float rotation){
         if(System.currentTimeMillis() < currentTime + SHOOT_COOLDOWN ) return;
         
-        new Bullet(1,getPosition(), rotation+ 90);
+        Integer id = Bullet.bulletIder.next();
+        
+        Bullet b = new Bullet(id,getPosition(), rotation+ 90);
+        ServerMainTest.mapManager.bullets.put(id, b);
+        
         
         for( Player p : ServerMainTest.players.values()){
             //TODO: change the bullet ID
             Utils.packetInstance(ObjectSpawnPacket.class, p).write(
-                    1 // ID
+                    id // ID
                     , ObjectType.BULLET // object type
                     ,"" // fish type
                     ,getPosition().x

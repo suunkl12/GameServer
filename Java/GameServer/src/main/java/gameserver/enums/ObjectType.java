@@ -28,6 +28,8 @@ public enum ObjectType {
         
         if (go instanceof Bullet) return ObjectType.BULLET;
         
+        if(go instanceof Fish) return ObjectType.FISH;
+        
         return ObjectType.NONE;
 
     }

@@ -6,6 +6,7 @@
 package gameserver.managers;
 
 import gameserver.enums.ObjectType;
+import gameserver.objects.Bullet;
 import gameserver.objects.Fish;
 import gameserver.objects.GameObject;
 import gameserver.objects.Player;
@@ -32,7 +33,8 @@ public class MapManager {
     }
 
     public HashMap<Integer, GameObject> objects = new HashMap<>();
-
+    public HashMap<Integer, Bullet> bullets = new HashMap<>();
+    
     public void initialize(){
 
         gameMap = new BanCaPhysics();
@@ -42,12 +44,15 @@ public class MapManager {
 
     }
 
-    public void onConnect(Player p){
+    public synchronized void onConnect(Player p){
 
         for(GameObject go : objects.values()){
 
             sendGameObject(p, go);
 
+        }
+        for(GameObject b : bullets.values()){
+            sendGameObject(p, b);
         }
 
     }
@@ -56,7 +61,14 @@ public class MapManager {
 
         ObjectType ot = ObjectType.fromObject(go);
 
-        Utils.packetInstance(ObjectSpawnPacket.class, p).write(go.getId(), ot, Utils.getType(go, ot), go.getPosition().x, go.getPosition().y, (ot == ObjectType.FISH ? ((Fish) go).getHealth() : 0));
+        Utils.packetInstance(ObjectSpawnPacket.class, p).write(
+                go.getId()
+                , ot
+                , Utils.getType(go, ot)
+                , go.getPosition().x
+                , go.getPosition().y
+                ,go.getRotation().z
+                , (ot == ObjectType.FISH ? ((Fish) go).getHealth() : 0));
 
     }
 

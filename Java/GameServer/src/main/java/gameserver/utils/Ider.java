@@ -14,7 +14,7 @@ import java.util.List;
 
 public class Ider{
 
-    private volatile List<Integer> dump = new ArrayList<>();
+    private List<Integer> dump = new ArrayList<>();
     private Integer id = 0;
 
     public Integer next(){
@@ -32,7 +32,9 @@ public class Ider{
 
     }
 
-    public void add(Integer i){
+    
+    //return the ID back to the pool
+    public void returnBackID(Integer i){
         if (id < i) return;
 
         dump.add(i);
