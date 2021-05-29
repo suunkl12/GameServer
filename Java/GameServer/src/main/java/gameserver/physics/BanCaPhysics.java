@@ -17,6 +17,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 import org.dyn4j.*;
+import org.dyn4j.dynamics.Settings;
 import org.dyn4j.geometry.AABB;
 import org.dyn4j.geometry.Rectangle;
 import org.dyn4j.world.World;
@@ -67,7 +68,6 @@ public class BanCaPhysics extends SimulationFrame {
                this.addKeyListener(keyListener);
                this.canvas.addKeyListener(keyListener);
          }
-        
         // no gravity on a top-down view of a billiards game
         @Override
         protected void initializeWorld() {

@@ -69,7 +69,7 @@ public final class Billiards extends SimulationFrame {
 		final double tableWidth = 1.83;
 		final double tableHeight = 1.12;
 		Vector2 vec2 =new Vector2(-20,0);
-                Vector2 point =new Vector2(-300,0);
+		Vector2 point =new Vector2(90,180);
 		final double halfTableWidth = tableWidth / 2.0;
 		final double halfTableHeight = tableHeight / 2.0;
 		final double halfEdgeDepth = edgeDepth / 2.0;
@@ -98,7 +98,7 @@ public final class Billiards extends SimulationFrame {
 		});
 		bottom.setMass(MassType.INFINITE);
 		world.addBody(bottom);
-		
+
 		SimulationBody wallRight = new SimulationBody(new Color(150, 75, 0));
 		BodyFixture fixture = wallRight.addFixture(Geometry.createRectangle(edgeDepth, tableHeight), 1.0, 0.4, 0.3);
 		fixture.setRestitutionVelocity(0.0);
@@ -126,18 +126,22 @@ public final class Billiards extends SimulationFrame {
 		wallBottom.translate(0, -halfTableHeight + halfEdgeDepth);
 		wallBottom.setMass(MassType.INFINITE);
 		world.addBody(wallBottom);
-		
+
 		SimulationBody cueBall = new SimulationBody(new Color(255, 255, 255));
-		fixture = cueBall.addFixture(Geometry.createCircle(ballRadius), ballDensity, ballFriction, ballRestitution);
+		fixture = cueBall.addFixture(Geometry.createSquare(0.25));
 		fixture.setRestitutionVelocity(0.0);
-		cueBall.translate(-0.35, 0.0);
-		cueBall.setLinearVelocity(0, 0.0);
+		cueBall.translate(-2, 0.0);
+		cueBall.setLinearVelocity(-5,0);
 		cueBall.setLinearDamping(0.3);
 		cueBall.setAngularDamping(0.8);
-                cueBall.applyForce(vec2, point);
 		cueBall.setMass(MassType.NORMAL);
+		//cueBall.applyForce(vec2, point);
 		this.world.addBody(cueBall);
-		
+		if(this.world.isUpdateRequired()){
+			cueBall.applyForce(vec2, point);
+			System.out.println("Time"+this.world.getTimeStep());
+		}
+
 		// billiard colors
 		Color[] colors = new Color[] {
 			// solid
