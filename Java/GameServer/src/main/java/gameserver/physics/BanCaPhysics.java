@@ -51,12 +51,9 @@ public class BanCaPhysics extends SimulationFrame {
     @Override
     protected void render(Graphics2D g, double elapsedTime) {
         super.render(g, elapsedTime);
-
-
         g.setColor(Color.BLACK);
         final double scale = this.getScale();
         //Code Update Here
-        // chỉnh độ phân giải màn hình
 
         SimulationBody cueBall = new SimulationBody(new Color(RandomInt(0, 255), RandomInt(0, 255), RandomInt(0, 255)));
         BodyFixture fixture = cueBall.addFixture(Geometry.createCircle(0.2));
@@ -73,6 +70,7 @@ public class BanCaPhysics extends SimulationFrame {
         this.world.addBody(cueBall);
 
         //End Code Update
+        // chỉnh độ phân giải màn hình
         g.draw(new Rectangle2D.Double(-wideMultipler / scale / 2, -heightMultipler / scale / 2, wideMultipler / scale, heightMultipler / scale));
         // g.draw(new Rectangle2D.Double(-50, -50, 100, 100) );
 
