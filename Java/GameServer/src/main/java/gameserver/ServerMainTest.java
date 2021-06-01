@@ -26,7 +26,6 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 import io.netty.handler.codec.protobuf.*;
 
-import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -165,7 +164,7 @@ public class ServerMainTest {
                     })
                     .childOption(ChannelOption.SO_KEEPALIVE, true)
                     .childOption(ChannelOption.TCP_NODELAY, true)
-                    .bind(port).sync().channel().closeFuture().sync();;
+                    .bind(port).sync().channel().closeFuture().sync();
             
             
             ChannelFuture f = b.bind().sync();
