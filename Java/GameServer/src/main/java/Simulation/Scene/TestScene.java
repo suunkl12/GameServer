@@ -52,7 +52,8 @@ public class TestScene extends SimulationFrame {
             cueBall.translate(0, 0);
             //setMagnitude vận tốc
             //Rotation.rotation45().toVector() Rotation về Vector
-            cueBall.setLinearVelocity(Direction(RandomInt(1,8)));
+            Vector2 b = cueBall.getTransform().getTranslation();
+            //cueBall.setLinearVelocity(Direction(RandomInt(1,8)));
             //System.out.println("Vec2 "+Rotation.rotation45().toVector());
             // set mass infinite de Object Move lien tuc
             cueBall.setMass(MassType.INFINITE);
