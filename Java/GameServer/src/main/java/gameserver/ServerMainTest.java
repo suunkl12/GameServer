@@ -13,6 +13,7 @@ import gameserver.physics.BanCaPhysics;
 import gameserver.utils.GunSlot;
 import gameserver.utils.Rotation;
 import gameserver.utils.Vector2;
+import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
@@ -22,9 +23,11 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
 
 
 import io.netty.handler.codec.protobuf.*;
+import java.net.InetSocketAddress;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,6 +49,9 @@ public class ServerMainTest {
     public static int MaxPlayer = 4;
     private final int port ;
     
+    
+    private final String host;
+    private final int serverPort;
     
     public static HashMap<Integer, Class<? extends Packet>> packets = new HashMap<Integer, Class<? extends Packet>>(){{
 
@@ -80,24 +86,36 @@ public class ServerMainTest {
     
     public ServerMainTest(int port) {
         this.port = port;
+        this.host = "";
+        this.serverPort = 25000;
     }
 
+    public ServerMainTest(int port, String host, int serverPort) {
+        this.port = port;
+        this.host = host;
+        this.serverPort = serverPort;
+    }
+
+    
     public static void main(String[] args) throws Exception {
         int port;
-        if (args.length != 1) {
+        int serverPort;
+        String host;
+        if (args.length != 3) {
             System.err.println("Usage: " + ServerMainTest.class.getSimpleName()
-                    + " <port>");
+                    + " <port> <serverPort> <host>");
             port = 4296;
-
+            host = "";
+            serverPort = 25000;
         }
         else{        
             port = Integer.parseInt(args[0]);
+            serverPort = Integer.parseInt(args[1]);
+            host = args[2];
         }
-        ServerMainTest newServer = new ServerMainTest(port);
+        ServerMainTest newServer = new ServerMainTest(port,host,serverPort);
         
         mapManager = new MapManager();
-        
-        
         
         BanCaPhysics simulation = new BanCaPhysics();
         
@@ -105,10 +123,12 @@ public class ServerMainTest {
         
         new Thread(simulation::run).start();
         
-        new Thread(newServer::start).start();
+        new Thread(newServer::startServer).start();
+        
+        new Thread(newServer::startClient).start();
     }
 
-    public void start() {
+    public void startServer() {
         
         EventLoopGroup group = new NioEventLoopGroup();
         try {
@@ -180,6 +200,36 @@ public class ServerMainTest {
         }
     }
     
-    
+    public void startClient() {
+        EventLoopGroup group = new NioEventLoopGroup();
+        try {
+            Bootstrap b = new Bootstrap();
+            b.group(group)
+                    .channel(NioSocketChannel.class)
+                    .remoteAddress(new InetSocketAddress(host, serverPort))
+                    .handler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        public void initChannel(SocketChannel ch)
+                                throws Exception {
+                            ch.pipeline().addLast(
+                                    new EchoClientHandler());
+                        }
+                    });
+            ChannelFuture f;
+            try {
+                f = b.connect().sync();
+                f.channel().closeFuture().sync();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ServerMainTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        } finally {
+            try {
+                group.shutdownGracefully().sync();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ServerMainTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
     
 }

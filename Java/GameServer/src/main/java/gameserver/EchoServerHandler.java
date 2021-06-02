@@ -41,7 +41,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
         this.ctx = ctx;
         if(ServerMainTest.players.size() >= ServerMainTest.MaxPlayer) return;
         
-        System.out.println ("Player " + p.getId () + " connected to the server!");
+        System.out.println ("Player " + p.getId () + " connected to the room!");
         
         //p là người dùng mà nó sẽ gửi đến, mỗi player có một Handler mà Utils sẽ gán cho packet để gửi thông tin
         Utils.packetInstance(ClientInfoPacket.class,p).write(p.getId(),0);
