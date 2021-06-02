@@ -54,6 +54,8 @@ public class BanCaPhysics extends SimulationFrame {
      */
     int i=0;
     int temp=0;
+    int waveCount=0;
+
     @Override
     protected void render(Graphics2D g, double elapsedTime) {
         super.render(g, elapsedTime);
@@ -65,9 +67,19 @@ public class BanCaPhysics extends SimulationFrame {
         //Fish b = new Fish(1, new Vector2(-7.5f, Fish.RandomFloat(-4.5f,4.5f)), new Rotation(0,0), FishType.FOX,1);
         if(i==temp)
         {temp=500;
-            for (int j = 0; j < 5; j++) {
-                Fish c = new Fish(1, new Vector2(-7.5f, Fish.RandomFloat(-4.5f,4.5f)), new Rotation(0,0), FishType.FOX);
-            }
+            if(waveCount<5)
+                for (int j = 0; j < 5; j++) {
+                    Fish c = new Fish(1, new Vector2(-7.5f, Fish.RandomFloat(-4.5f,4.5f)), new Rotation(0,0), FishType.FOX);
+
+                }
+            if(waveCount>5)
+                for (int j = 0; j < 5; j++) {
+                    Fish c = new Fish(1, new Vector2(7.5f, Fish.RandomFloat(-4.5f,4.5f)), new Rotation(0,0), FishType.FOX);
+
+                }
+            if(waveCount==10)
+                waveCount=0;
+            waveCount++;
             i=0;
         }
         i++;

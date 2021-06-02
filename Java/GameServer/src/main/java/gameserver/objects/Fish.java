@@ -72,7 +72,7 @@ public class Fish extends GameObject{
 
 
         e.scheduleAtFixedRate(()->ServerMainTest.mapManager.getGameMap().addInQueue(this::sendAndSetFishCord), 0, 16, TimeUnit.MILLISECONDS) ;
-        e.schedule(() -> ServerMainTest.mapManager.getGameMap().addInQueue(this::dispose), 30000, TimeUnit.MILLISECONDS);
+        e.schedule(() -> ServerMainTest.mapManager.getGameMap().addInQueue(this::dispose), 33000, TimeUnit.MILLISECONDS);
 
     }
     public synchronized void dispose(){
@@ -124,12 +124,18 @@ public class Fish extends GameObject{
     org.dyn4j.geometry.Vector2 Result = new org.dyn4j.geometry.Vector2(7.5f, -4.5f).setMagnitude(speed);
 
     public org.dyn4j.geometry.Vector2 Direction(float xPos,float yPos) {
-        //Vi Tri Spawn Top Left
+        //Vi Tri Spawn Left Top
         if (xPos <0 && yPos>0) {
-            Result = new org.dyn4j.geometry.Vector2(7.5f, RandomFloat(0,-4.5f)).setMagnitude(speed);
-        }//Vi Tri Spawn Bot Left
+            Result = new org.dyn4j.geometry.Vector2(7.5f, RandomFloat(-4.5f,0)).setMagnitude(speed);
+        }//Vi Tri Spawn Left Bot
         if (xPos <0 && yPos<0) {
             Result = new org.dyn4j.geometry.Vector2(7.5f, RandomFloat(0,4.5f)).setMagnitude(speed);
+        }//Vi Tri Spawn Right Top
+        if (xPos >0 && yPos>0) {
+            Result = new org.dyn4j.geometry.Vector2(-7.5f, RandomFloat(-4.5f,0)).setMagnitude(speed);
+        }//Vi Tri Spawn Right Bot
+        if (xPos >0 && yPos<0) {
+            Result = new org.dyn4j.geometry.Vector2(-7.5f, RandomFloat(0,4.5f)).setMagnitude(speed);
         }
 
         return Result;
