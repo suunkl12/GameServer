@@ -37,7 +37,7 @@ public class Fish extends GameObject{
     private ScheduledExecutorService e;
 
     private SimulationBody b;
-    public Fish(Integer id, Vector2 position, Rotation rotation, FishType ft, int DirectionID) {
+    public Fish(Integer id, Vector2 position, Rotation rotation, FishType ft) {
         super(id, position, rotation);
         spawn();
     }
@@ -62,7 +62,7 @@ public class Fish extends GameObject{
         //Random Toa do
         b.translate(getPosition().x,getPosition().y);
 
-        b.setLinearVelocity(Direction(1));
+        b.setLinearVelocity(Direction(getPosition().x,getPosition().y));
         //System.out.println("Vec2 "+Rotation.rotation45().toVector());
         // set mass infinite de Object Move lien tuc
         b.setMass(MassType.INFINITE);
@@ -120,49 +120,18 @@ public class Fish extends GameObject{
         Random rand = new Random();
         return rand.nextFloat() * (max - min) + min;
     }
+    Double speed = 5.0*0.1;
+    org.dyn4j.geometry.Vector2 Result = new org.dyn4j.geometry.Vector2(7.5f, -4.5f).setMagnitude(speed);
 
-    public org.dyn4j.geometry.Vector2 Direction(int RandomDirID) {
-        Double speed = 5.0;
-        speed = speed * 0.1;
-        org.dyn4j.geometry.Vector2 Result = new org.dyn4j.geometry.Vector2(0, 0);
-        switch (RandomDirID) {
-            case 1:
-                // Right 0
-                //setMagnitude vận tốc
-                //Rotation.rotation45().toVector() Rotation về Vector
-                Result = org.dyn4j.geometry.Rotation.rotation0().toVector().setMagnitude(speed);
-                return Result;
-            case 2:
-                // Top Right 45
-                Result = org.dyn4j.geometry.Rotation.rotation45().toVector().setMagnitude(speed);
-                return Result;
-            case 3:
-                // Top
-                Result = org.dyn4j.geometry.Rotation.rotation90().toVector().setMagnitude(speed);
-                return Result;
-            case 4:
-                // Top Left 135
-                // Top Left
-                Result = org.dyn4j.geometry.Rotation.rotation135().toVector().setMagnitude(speed);
-                return Result;
-            case 5:
-                //Left
-                Result = org.dyn4j.geometry.Rotation.rotation180().toVector().setMagnitude(speed);
-                return Result;
-            case 6:
-                //Left Bot
-                Result = org.dyn4j.geometry.Rotation.rotation225().toVector().setMagnitude(speed);
-                return Result;
-            case 7:
-                // Bot
-                Result = org.dyn4j.geometry.Rotation.rotation270().toVector().setMagnitude(speed);
-                return Result;
-            case 8: //Bot Right
-                Result = org.dyn4j.geometry.Rotation.rotation315().toVector().setMagnitude(speed);
-                return Result;
-
-            default:
-                return Result;
+    public org.dyn4j.geometry.Vector2 Direction(float xPos,float yPos) {
+        //Vi Tri Spawn Top Left
+        if (xPos <0 && yPos>0) {
+            Result = new org.dyn4j.geometry.Vector2(7.5f, RandomFloat(0,-4.5f)).setMagnitude(speed);
+        }//Vi Tri Spawn Bot Left
+        if (xPos <0 && yPos<0) {
+            Result = new org.dyn4j.geometry.Vector2(7.5f, RandomFloat(0,4.5f)).setMagnitude(speed);
         }
+
+        return Result;
     }
 }

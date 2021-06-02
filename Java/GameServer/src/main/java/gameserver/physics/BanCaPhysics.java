@@ -43,7 +43,7 @@ public class BanCaPhysics extends SimulationFrame {
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_A:
                     //DirectionID từ 1 - 8
-                    Fish b = new Fish(1, new Vector2(-7.5f, Fish.RandomFloat(-4.5f,4.5f)), new Rotation(0,0), FishType.FOX,2);
+                    Fish b = new Fish(1, new Vector2(-7.5f, Fish.RandomFloat(-4.5f,4.5f)), new Rotation(0,0), FishType.FOX);
                     break;
             }
         }
@@ -52,15 +52,25 @@ public class BanCaPhysics extends SimulationFrame {
     /**
      * Update.
      */
-
+    int i=0;
+    int temp=0;
     @Override
     protected void render(Graphics2D g, double elapsedTime) {
         super.render(g, elapsedTime);
         g.setColor(Color.BLACK);
         final double scale = this.getScale();
+
         //Code Update Here
         //Fish b = new Fish(1, new Vector2(-7.5f, Fish.RandomFloat(-4.5f,4.5f)), new Rotation(0,0), FishType.FOX,2);
         //Fish b = new Fish(1, new Vector2(-7.5f, Fish.RandomFloat(-4.5f,4.5f)), new Rotation(0,0), FishType.FOX,1);
+        if(i==temp)
+        {temp=500;
+            for (int j = 0; j < 5; j++) {
+                Fish c = new Fish(1, new Vector2(-7.5f, Fish.RandomFloat(-4.5f,4.5f)), new Rotation(0,0), FishType.FOX);
+            }
+            i=0;
+        }
+        i++;
         //End Code Update
         // chỉnh độ phân giải màn hình
         g.draw(new Rectangle2D.Double(-wideMultipler / scale / 2, -heightMultipler / scale / 2, wideMultipler / scale, heightMultipler / scale));
