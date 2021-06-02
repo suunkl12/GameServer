@@ -37,12 +37,14 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
         this.ctx = ctx;
         
         System.out.println (" Connected to the server!");
-       
+        
+       Runtime.getRuntime().addShutdownHook(new Thread(() -> ctx.close() ));
     }
     
     
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        
     }
     
     @Override
@@ -54,12 +56,15 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
     
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        ctx.flush();
     }
     
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx,
     Throwable cause) {
         cause.printStackTrace();
-        ctx.close();
+        ctx.flush();
+        ctx.writeAndFlush(Unpooled.EMPTY_BUFFER)
+        .addListener(ChannelFutureListener.CLOSE);
     }
 }
