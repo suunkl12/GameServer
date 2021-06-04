@@ -5,25 +5,32 @@
  */
 package gameserver.enums;
 
+import java.awt.*;
+
 /**
  *
  * @author Khang
  */
 public enum FishType {
-    FOX(1), RABBIT(2), PIG(3), CHICKEN(4), MOUSE(5);
+    FOX(1,Color.ORANGE),
+    RABBIT(2,Color.WHITE),
+    PIG(3,Color.PINK),
+    CHICKEN(4,Color.YELLOW),
+    MOUSE(5,Color.BLACK);
     
     private Integer health;
-
-    FishType(Integer health){
-
+    private Color isColor;
+    FishType(Integer health, Color isColor){
         this.health = health;
-
+        this.isColor = isColor;
     }
 
     public Integer getHealth(){
         return health;
     }
-
+    public Color getColor(){
+        return isColor;
+    }
     public static FishType fromString(String s){
 
         try { return FishType.valueOf(s); }

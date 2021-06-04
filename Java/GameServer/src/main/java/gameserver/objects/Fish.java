@@ -32,13 +32,14 @@ import java.util.concurrent.TimeUnit;
 public class Fish extends GameObject{
     int health;
     public static Ider fishIder = new Ider();
-    int DirectionID;
     FishType ft;
     private ScheduledExecutorService e;
-
+    boolean isRandomTarget;
     private SimulationBody b;
-    public Fish(Integer id, Vector2 position, Rotation rotation, FishType ft) {
+    public Fish(Integer id, Vector2 position, Rotation rotation, FishType ft, boolean isRandomTarget) {
         super(id, position, rotation);
+        this.ft = ft;
+        this.isRandomTarget = isRandomTarget;
         spawn();
     }
     
@@ -55,7 +56,7 @@ public class Fish extends GameObject{
     }
     private void spawn(){
 
-        b = new SimulationBody(new Color(RandomInt(0, 255), RandomInt(0, 255), RandomInt(0, 255)));
+        b = new SimulationBody(ft.getColor());
         BodyFixture fixture = b.addFixture(Geometry.createCircle(0.2));
         fixture.setRestitutionVelocity(0.0);
         //translate vị trí Spawn
@@ -124,20 +125,31 @@ public class Fish extends GameObject{
     org.dyn4j.geometry.Vector2 Result = new org.dyn4j.geometry.Vector2(7.5f, -4.5f).setMagnitude(speed);
 
     public org.dyn4j.geometry.Vector2 Direction(float xPos,float yPos) {
-        //Vi Tri Spawn Left Top
-        if (xPos <0 && yPos>0) {
-            Result = new org.dyn4j.geometry.Vector2(7.5f, RandomFloat(-4.5f,0)).setMagnitude(speed);
-        }//Vi Tri Spawn Left Bot
-        if (xPos <0 && yPos<0) {
-            Result = new org.dyn4j.geometry.Vector2(7.5f, RandomFloat(0,4.5f)).setMagnitude(speed);
-        }//Vi Tri Spawn Right Top
-        if (xPos >0 && yPos>0) {
-            Result = new org.dyn4j.geometry.Vector2(-7.5f, RandomFloat(-4.5f,0)).setMagnitude(speed);
-        }//Vi Tri Spawn Right Bot
-        if (xPos >0 && yPos<0) {
-            Result = new org.dyn4j.geometry.Vector2(-7.5f, RandomFloat(0,4.5f)).setMagnitude(speed);
-        }
+        if(isRandomTarget==true) {
+            //Vi Tri Spawn Left Top
+            if (xPos < 0 && yPos > 0) {
+                Result = new org.dyn4j.geometry.Vector2(7.5f, RandomFloat(-4.5f, 0)).setMagnitude(speed);
+            }//Vi Tri Spawn Left Bot
+            if (xPos < 0 && yPos < 0) {
+                Result = new org.dyn4j.geometry.Vector2(7.5f, RandomFloat(0, 4.5f)).setMagnitude(speed);
+            }//Vi Tri Spawn Right Top
+            if (xPos > 0 && yPos > 0) {
+                Result = new org.dyn4j.geometry.Vector2(-7.5f, RandomFloat(-4.5f, 0)).setMagnitude(speed);
+            }//Vi Tri Spawn Right Bot
+            if (xPos > 0 && yPos < 0) {
+                Result = new org.dyn4j.geometry.Vector2(-7.5f, RandomFloat(0, 4.5f)).setMagnitude(speed);
+            }
+        }else {
+            //LEFT TO RIGHT
+            // ly cho yPos - yPos = 0 là để cho nó spawn theo duong thang vì result ở đay trả về hướng đi
 
+            if (xPos < 0) {
+                Result = new org.dyn4j.geometry.Vector2(7.5f, yPos-yPos).setMagnitude(speed);
+            }//RIGHT TO LEFT
+            if (xPos > 0) {
+                Result = new org.dyn4j.geometry.Vector2(-7.5f, yPos-yPos).setMagnitude(speed);
+            }
+        }
         return Result;
     }
 }

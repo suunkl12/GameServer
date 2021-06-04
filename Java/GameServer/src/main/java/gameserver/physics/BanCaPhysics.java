@@ -42,8 +42,8 @@ public class BanCaPhysics extends SimulationFrame {
         public void keyPressed(KeyEvent e) {
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_A:
-                    //DirectionID từ 1 - 8
-                    Fish b = new Fish(1, new Vector2(-7.5f, Fish.RandomFloat(-4.5f,4.5f)), new Rotation(0,0), FishType.FOX);
+                    //IsRandomTarget là check xem huong di chuyen co Random ko
+                    Fish b = new Fish(1, new Vector2(-7.5f, -3f), new Rotation(0,0), FishType.FOX,false);
                     break;
             }
         }
@@ -69,15 +69,25 @@ public class BanCaPhysics extends SimulationFrame {
         {temp=500;
             if(waveCount<5)
                 for (int j = 0; j < 5; j++) {
-                    Fish c = new Fish(1, new Vector2(-7.5f, Fish.RandomFloat(-4.5f,4.5f)), new Rotation(0,0), FishType.FOX);
+                    Fish c = new Fish(1+j+2, new Vector2(-7.5f, Fish.RandomFloat(-4.5f,4.5f)), new Rotation(0,0), FishType.FOX,true);
 
                 }
-            if(waveCount>5)
+            if(waveCount>5&&waveCount<10)
                 for (int j = 0; j < 5; j++) {
-                    Fish c = new Fish(1, new Vector2(7.5f, Fish.RandomFloat(-4.5f,4.5f)), new Rotation(0,0), FishType.FOX);
+                    Fish c = new Fish(1+j+10, new Vector2(7.5f, Fish.RandomFloat(-4.5f,4.5f)), new Rotation(0,0), FishType.CHICKEN,true);
 
                 }
-            if(waveCount==10)
+            if(waveCount>10)
+                for (int j = 0; j < 5; j++) {
+                    Fish c = new Fish(1+j+10, new Vector2(7.5f, -2+j), new Rotation(0,0), FishType.PIG,false);
+
+                }
+            if(waveCount>15)
+                for (int j = 0; j < 5; j++) {
+                    Fish c = new Fish(1+j+10, new Vector2(-7.5f, -2+j), new Rotation(0,0), FishType.MOUSE,false);
+
+                }
+            if(waveCount==20)
                 waveCount=0;
             waveCount++;
             i=0;
