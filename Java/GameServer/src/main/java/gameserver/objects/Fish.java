@@ -151,7 +151,7 @@ public class Fish extends GameObject{
         }
         return Result;
     }
-    public static FishType RandomFish(boolean Check,FishType Ifnot){
+    public static FishType RandomFish(boolean Check,FishType DefaultFish){
         int temp= Fish.RandomInt(1,5);
         if (Check == true) {
             if(temp ==1){
@@ -170,6 +170,6 @@ public class Fish extends GameObject{
                 return FishType.CHICKEN;
             }
         }
-        return Ifnot;
+        return DefaultFish;
     }
 }
