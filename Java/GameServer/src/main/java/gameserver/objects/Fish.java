@@ -107,7 +107,7 @@ public class Fish extends GameObject{
             Utils.packetInstance(ObjectMovePacket.class, p).write(this.getId(),ObjectType.FISH,(float)fish.x, (float)fish.y,0f);
         }
     }
-    public int RandomInt(int min, int max) {
+    public static int RandomInt(int min, int max) {
         Random rand = new Random();
 
         // nextInt is normally exclusive of the top value,
@@ -123,7 +123,6 @@ public class Fish extends GameObject{
     }
     Double speed = 5.0*0.1;
     org.dyn4j.geometry.Vector2 Result = new org.dyn4j.geometry.Vector2(7.5f, -4.5f).setMagnitude(speed);
-
     public org.dyn4j.geometry.Vector2 Direction(float xPos,float yPos) {
         if(isRandomTarget==true) {
             //Vi Tri Spawn Left Top
@@ -151,5 +150,26 @@ public class Fish extends GameObject{
             }
         }
         return Result;
+    }
+    public static FishType RandomFish(boolean Check,FishType Ifnot){
+        int temp= Fish.RandomInt(1,5);
+        if (Check == true) {
+            if(temp ==1){
+                return FishType.FOX;
+            }
+            if(temp ==2){
+                return FishType.RABBIT;
+            }
+            if(temp ==3){
+                return FishType.MOUSE;
+            }
+            if(temp ==4){
+                return FishType.PIG;
+            }
+            if(temp ==5){
+                return FishType.CHICKEN;
+            }
+        }
+        return Ifnot;
     }
 }

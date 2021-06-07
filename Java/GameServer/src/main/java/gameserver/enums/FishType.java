@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package gameserver.enums;
-
 import java.awt.*;
 
 /**
@@ -37,4 +36,5 @@ public enum FishType {
         catch(Exception ignored) { return null; }
 
     }
+
 }
