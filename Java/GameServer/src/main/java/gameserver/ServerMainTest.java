@@ -71,6 +71,9 @@ public class ServerMainTest {
     
     public static HashMap<Integer, Player> players = new HashMap<>();
     
+    
+    
+    
     public static HashMap<ChannelHandlerContext, EchoServerHandler> handlers = new HashMap<>();
     
     public static  MapManager mapManager;
@@ -128,7 +131,6 @@ public class ServerMainTest {
         
         new Thread(newServer::startServer).start();
         
-        new Thread(newServer::startClient).start();
     }
 
     public void startServer() {

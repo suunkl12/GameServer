@@ -34,6 +34,7 @@ public class MapManager {
 
     public HashMap<Integer, GameObject> objects = new HashMap<>();
     public HashMap<Integer, Bullet> bullets = new HashMap<>();
+    public static HashMap<Integer,Fish> fishes = new HashMap<>();
     
     public void initialize(){
 
