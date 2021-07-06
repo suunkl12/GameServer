@@ -72,8 +72,8 @@ public class Fish extends GameObject{
         e = Executors.newSingleThreadScheduledExecutor();
 
 
-        e.scheduleAtFixedRate(()->ServerMainTest.mapManager.getGameMap().addInQueue(this::sendAndSetFishCord), 0, 16, TimeUnit.MILLISECONDS) ;
-        e.schedule(() -> ServerMainTest.mapManager.getGameMap().addInQueue(this::dispose), 33000, TimeUnit.MILLISECONDS);
+        //e.scheduleAtFixedRate(()->ServerMainTest.mapManager.getGameMap().addInQueue(this::sendAndSetFishCord), 0, 16, TimeUnit.MILLISECONDS) ;
+        //e.schedule(() -> ServerMainTest.mapManager.getGameMap().addInQueue(this::dispose), 33000, TimeUnit.MILLISECONDS);
 
     }
     public synchronized void dispose(){
