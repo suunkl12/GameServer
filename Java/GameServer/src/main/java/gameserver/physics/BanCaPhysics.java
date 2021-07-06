@@ -89,7 +89,12 @@ public class BanCaPhysics extends SimulationFrame {
                     Fish c = new Fish(1+j+10, new Vector2(-7.5f, -2+j), new Rotation(0,0), FishType.MOUSE,false);
 
                 }
-            if(waveCount==20)
+            if(waveCount>20)
+                for (int j = 0; j < 5; j++) {
+                    Fish c = new Fish(1+j+10, new Vector2(-7.5f, -2+j), new Rotation(0,0), FishType.RABBIT,false);
+
+                }
+            if(waveCount==30)
                 waveCount=0;
             waveCount++;
             i=0;
