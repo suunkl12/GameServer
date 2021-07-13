@@ -11,21 +11,24 @@ import java.awt.*;
  * @author Khang
  */
 public enum FishType {
+    //enum can have values inside it
     FOX(1,Color.ORANGE),
     RABBIT(2,Color.WHITE),
     PIG(3,Color.PINK),
     CHICKEN(4,Color.YELLOW),
-    MOUSE(5,Color.BLACK);
+    MOUSE(5,Color.BLACK),
+    NONE(0,Color.WHITE);
     
-    private Integer health;
+    private Integer animalID;
     private Color isColor;
+    
     FishType(Integer health, Color isColor){
-        this.health = health;
+        this.animalID = health;
         this.isColor = isColor;
     }
 
-    public Integer getHealth(){
-        return health;
+    public Integer getAnimalID(){
+        return animalID;
     }
     public Color getColor(){
         return isColor;

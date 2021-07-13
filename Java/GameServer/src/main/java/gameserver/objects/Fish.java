@@ -11,6 +11,7 @@ import gameserver.enums.FishType;
 import gameserver.enums.ObjectType;
 import gameserver.packets.ObjectDespawnPacket;
 import gameserver.packets.ObjectMovePacket;
+import gameserver.packets.ObjectSpawnPacket;
 import gameserver.utils.Ider;
 import gameserver.utils.Rotation;
 import gameserver.utils.Utils;
@@ -68,12 +69,26 @@ public class Fish extends GameObject{
         // set mass infinite de Object Move lien tuc
         b.setMass(MassType.INFINITE);
         ServerMainTest.mapManager.getGameMap().addBody(b);
-
+        ServerMainTest.mapManager.fishes.put(getId(), this);
+        
+        for( Player p : ServerMainTest.players.values()){
+            //TODO: change the bullet ID
+            Utils.packetInstance(ObjectSpawnPacket.class, p).write(
+                    getId() // ID
+                    ,ObjectType.FISH // object type
+                    ,getType() // fish type
+                    ,getPosition().x
+                    ,getPosition().y
+                    ,getRotation().z
+                    ,0); 
+        }
+        
+        
         e = Executors.newSingleThreadScheduledExecutor();
 
 
-        //e.scheduleAtFixedRate(()->ServerMainTest.mapManager.getGameMap().addInQueue(this::sendAndSetFishCord), 0, 16, TimeUnit.MILLISECONDS) ;
-        //e.schedule(() -> ServerMainTest.mapManager.getGameMap().addInQueue(this::dispose), 33000, TimeUnit.MILLISECONDS);
+        e.scheduleAtFixedRate(()->ServerMainTest.mapManager.getGameMap().addInQueue(this::sendAndSetFishCord), 0, 16, TimeUnit.MILLISECONDS) ;
+        e.schedule(() -> ServerMainTest.mapManager.getGameMap().addInQueue(this::dispose), 33000, TimeUnit.MILLISECONDS);
 
     }
     public synchronized void dispose(){
@@ -83,7 +98,7 @@ public class Fish extends GameObject{
             fishIder.returnBackID(getId());
 
             ServerMainTest.mapManager.getGameMap().removeBody(b);
-            ServerMainTest.mapManager.objects.remove(getId());
+            ServerMainTest.mapManager.fishes.remove(getId());
 
             //TODO: send to clients to delete object
             for (Player p : ServerMainTest.players.values())

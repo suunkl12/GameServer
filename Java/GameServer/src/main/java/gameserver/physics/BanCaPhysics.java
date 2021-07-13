@@ -69,24 +69,30 @@ public class BanCaPhysics extends SimulationFrame {
         {temp=500;
             if(waveCount<5)
                 for (int j = 0; j < 5; j++) {
-                    Fish c = new Fish(1+j+2, new Vector2(-7.5f, Fish.RandomFloat(-4.5f,4.5f)), new Rotation(0,0),Fish.RandomFish(true,FishType.FOX) ,true);
+                    int id = Fish.fishIder.next();
+                    //Fish c = new Fish(1+j+2, new Vector2(-7.5f, Fish.RandomFloat(-4.5f,4.5f)), new Rotation(0,0),Fish.RandomFish(true,FishType.FOX) ,true);
+                    Fish c = new Fish(id, new Vector2(-7.5f, Fish.RandomFloat(-4.5f,4.5f)), new Rotation(0,0),Fish.RandomFish(true,FishType.FOX) ,true);
                 }
             if(waveCount>5&&waveCount<10)
                 for (int j = 0; j < 5; j++) {
-                    Fish c = new Fish(1+j+10, new Vector2(7.5f, Fish.RandomFloat(-4.5f,4.5f)), new Rotation(0,0), FishType.CHICKEN,true);
-
+                    int id = Fish.fishIder.next();
+                    //Fish c = new Fish(1+j+10, new Vector2(7.5f, Fish.RandomFloat(-4.5f,4.5f)), new Rotation(0,0), FishType.CHICKEN,true);
+                    Fish c = new Fish(id, new Vector2(7.5f, Fish.RandomFloat(-4.5f,4.5f)), new Rotation(0,0), FishType.CHICKEN,true);
                 }
             //từ đây trở đi spawn theo đường thẳng
             // -2+j ở vector2 ở đây là để sấp xếp vị trí trong vòng for
             // isRandomTarget để biết là Object có phải Random hướng di chuyển ko
             if(waveCount>10)
                 for (int j = 0; j < 5; j++) {
-                    Fish c = new Fish(1+j+10, new Vector2(7.5f, -2+j), new Rotation(0,0), FishType.PIG,false);
-
+                    int id = Fish.fishIder.next();
+                    //Fish c = new Fish(1+j+10, new Vector2(7.5f, -2+j), new Rotation(0,0), FishType.PIG,false);
+                    Fish c = new Fish(id, new Vector2(7.5f, -2+j), new Rotation(0,0), FishType.PIG,false);
                 }
             if(waveCount>15)
                 for (int j = 0; j < 5; j++) {
-                    Fish c = new Fish(1+j+10, new Vector2(-7.5f, -2+j), new Rotation(0,0), FishType.MOUSE,false);
+                    int id = Fish.fishIder.next();
+                    //Fish c = new Fish(1+j+10, new Vector2(-7.5f, -2+j), new Rotation(0,0), FishType.MOUSE,false);
+                    Fish c = new Fish(id, new Vector2(-7.5f, -2+j), new Rotation(0,0), FishType.MOUSE,false);
 
                 }
             if(waveCount==20)

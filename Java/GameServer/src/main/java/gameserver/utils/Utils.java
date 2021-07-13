@@ -127,7 +127,6 @@ public class Utils {
     public static String getType(GameObject go, ObjectType ot){
 
         switch(ot){
-
             case FISH:
                 return ((Fish) go).getType().toString();
             default:
