@@ -12,11 +12,11 @@ import java.awt.*;
  */
 public enum FishType {
     //enum can have values inside it
-    FOX(1,Color.ORANGE),
+    FOX(2,Color.ORANGE),
     RABBIT(2,Color.WHITE),
     PIG(3,Color.PINK),
-    CHICKEN(4,Color.YELLOW),
-    MOUSE(5,Color.BLACK),
+    CHICKEN(2,Color.YELLOW),
+    MOUSE(1,Color.BLACK),
     NONE(0,Color.WHITE);
     
     private Integer animalID;

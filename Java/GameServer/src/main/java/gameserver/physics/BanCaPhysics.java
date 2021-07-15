@@ -10,6 +10,8 @@ import Simulation.framework.SimulationFrame;
 import gameserver.enums.FishType;
 import gameserver.objects.Bullet;
 import gameserver.objects.Fish;
+import gameserver.objects.GameObject;
+import gameserver.objects.Player;
 import gameserver.utils.Rotation;
 import gameserver.utils.Vector2;
 
@@ -18,8 +20,10 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -30,6 +34,12 @@ import org.dyn4j.geometry.*;
 import org.dyn4j.world.World;
 
 import javax.swing.*;
+import org.dyn4j.collision.CollisionBody;
+import org.dyn4j.collision.Fixture;
+import org.dyn4j.world.BroadphaseCollisionData;
+import org.dyn4j.world.ManifoldCollisionData;
+import org.dyn4j.world.NarrowphaseCollisionData;
+import org.dyn4j.world.listener.CollisionListenerAdapter;
 
 /**
  * @author Khang
@@ -37,6 +47,8 @@ import javax.swing.*;
 public class BanCaPhysics extends SimulationFrame {
     public static final double wideMultipler = 1920 * 8;
     public static final double heightMultipler = 1080 * 8;
+    
+    public CollisionListenerAdapter customCollision;
     private class CustomEventKeyListener extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
@@ -48,6 +60,8 @@ public class BanCaPhysics extends SimulationFrame {
             }
         }
     }
+    
+    
     // Gần giống hàm Update Của Unity
     /**
      * Update.
@@ -55,7 +69,61 @@ public class BanCaPhysics extends SimulationFrame {
     int i=0;
     int temp=0;
     int waveCount=0;
+    
+    public class CustomCollision extends CollisionListenerAdapter<CollisionBody<BodyFixture>, BodyFixture>{
 
+        //unknow
+        @Override
+        public boolean collision(ManifoldCollisionData<CollisionBody<BodyFixture>, BodyFixture> collision) {
+           //on(collision.getFixture1(),collision.getFixture2());
+            
+            return true; //To change body of generated methods, choose Tools | Templates.
+        }
+
+        //cheaper
+        @Override
+        public boolean collision(BroadphaseCollisionData<CollisionBody<BodyFixture>, BodyFixture> collision) {
+            on(collision.getFixture1(),collision.getFixture2());
+            return super.collision(collision); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        //expensive
+        @Override
+        public boolean collision(NarrowphaseCollisionData<CollisionBody<BodyFixture>, BodyFixture> collision) {
+            //on(collision.getFixture1(),collision.getFixture2());
+            return super.collision(collision); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        
+    }
+    
+    public void on (BodyFixture bf1, BodyFixture bf2){
+        Map.Entry<Bullet,GameObject> entry = get(bf1,bf2);
+        if (entry == null) return;
+        
+        if(entry.getValue() instanceof Fish){
+            entry.getKey().dispose();
+            ((Fish)entry.getValue()).dispose();
+        }
+    }
+    
+    public static Map.Entry<Bullet, GameObject> get(BodyFixture bf, BodyFixture bf2){
+
+        if (bf.getUserData() != null && bf.getUserData() instanceof Bullet && bf2.getUserData() != null && isObject(bf2.getUserData())) return new AbstractMap.SimpleEntry<>((Bullet) bf.getUserData(), (GameObject) bf2.getUserData());
+        else if (bf2.getUserData() != null && bf2.getUserData() instanceof Bullet && bf.getUserData() != null && isObject(bf.getUserData())) return new AbstractMap.SimpleEntry<>((Bullet) bf2.getUserData(), (GameObject) bf.getUserData());
+
+        return null;
+
+    }
+    
+    private static Boolean isObject(Object o){
+
+        return o instanceof Fish;
+
+    }
+    
+    
+    
     @Override
     protected void render(Graphics2D g, double elapsedTime) {
         super.render(g, elapsedTime);
@@ -137,9 +205,13 @@ public class BanCaPhysics extends SimulationFrame {
     @Override
     protected void initializeWorld() {
         this.world.setGravity(World.ZERO_GRAVITY);
+        
+        customCollision = new CustomCollision();
+        
+        this.world.addCollisionListener(customCollision);
     }
 
-
+    
 
     //world của Simulation frame được protected
     public void addBody(SimulationBody body) {

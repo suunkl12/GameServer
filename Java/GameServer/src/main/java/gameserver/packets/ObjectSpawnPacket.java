@@ -6,6 +6,7 @@
 package gameserver.packets;
 
 import gameserver.HotMessage;
+import gameserver.enums.FishType;
 import gameserver.enums.ObjectType;
 import gameserver.utils.Utils;
 import java.lang.invoke.MethodHandles;

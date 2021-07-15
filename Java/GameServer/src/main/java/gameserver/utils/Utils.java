@@ -146,6 +146,8 @@ public class Utils {
         try {
             if (objects.length < types.size() || objects.length > types.size()) return false;
 
+            
+            //Check từng thông số đưa vào có cùng loại hay không, ví dụ FishType enum là FOX, và string "FOX" khá giống nhau nhưng mà khác loại, nên return flase
             for(int i = 0; i < types.size(); i++){
 
                 if(objects[i].getClass() != types.get(i)) return false;

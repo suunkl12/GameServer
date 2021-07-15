@@ -8,6 +8,7 @@ package gameserver.objects;
 import gameserver.utils.Rotation;
 import gameserver.EchoServerHandler;
 import gameserver.ServerMainTest;
+import gameserver.enums.FishType;
 import gameserver.enums.ObjectType;
 import gameserver.packets.ObjectSpawnPacket;
 import gameserver.utils.*;
@@ -97,7 +98,7 @@ public class Player extends GameObject{
             Utils.packetInstance(ObjectSpawnPacket.class, p).write(
                     id // ID
                     , ObjectType.BULLET // object type
-                    ,"" // fish type
+                    ,FishType.NONE.toString() // fish type
                     ,getPosition().x
                     ,getPosition().y
                     ,getRotation().z

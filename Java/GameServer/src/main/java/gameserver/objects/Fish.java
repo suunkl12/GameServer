@@ -41,6 +41,7 @@ public class Fish extends GameObject{
         super(id, position, rotation);
         this.ft = ft;
         this.isRandomTarget = isRandomTarget;
+        this.health = ft.getAnimalID();
         spawn();
     }
     
@@ -60,6 +61,11 @@ public class Fish extends GameObject{
         b = new SimulationBody(ft.getColor());
         BodyFixture fixture = b.addFixture(Geometry.createCircle(0.2));
         fixture.setRestitutionVelocity(0.0);
+        
+        fixture.setSensor(true);
+        //cái userdata này dùng để tra cứu khi có collision
+        fixture.setUserData(this);
+        
         //translate vị trí Spawn
         //Random Toa do
         b.translate(getPosition().x,getPosition().y);
@@ -69,19 +75,22 @@ public class Fish extends GameObject{
         // set mass infinite de Object Move lien tuc
         b.setMass(MassType.INFINITE);
         ServerMainTest.mapManager.getGameMap().addBody(b);
-        ServerMainTest.mapManager.fishes.put(getId(), this);
         
         for( Player p : ServerMainTest.players.values()){
             //TODO: change the bullet ID
             Utils.packetInstance(ObjectSpawnPacket.class, p).write(
-                    getId() // ID
+                    this.getId() // ID
                     ,ObjectType.FISH // object type
-                    ,getType() // fish type
+                    ,getType().toString() // fish type
                     ,getPosition().x
                     ,getPosition().y
                     ,getRotation().z
                     ,0); 
         }
+        
+        ServerMainTest.mapManager.fishes.put(getId(), this);
+        
+        
         
         
         e = Executors.newSingleThreadScheduledExecutor();
