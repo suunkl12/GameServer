@@ -156,8 +156,8 @@ public class ServerMainTest {
                             
                             do
                             {
-                                // set gun to random
-                                int i = r.ints(0, gunPositions.size() - 1).findFirst().getAsInt() ; 
+                                // set gun to random, exclusive 4
+                                int i = r.ints(0, gunPositions.size()).findFirst().getAsInt() ; 
                                 if (!gunPositions.get(i).getIsUsed())
                                 {
                                     Rotation rot = new Rotation();
@@ -168,7 +168,8 @@ public class ServerMainTest {
                                     }
 
                                     gunPositions.get(i).setIsUsed(true);
-                                    System.out.println("You are in slotGun: " + i);
+                                    System.out.println("You are in slotGun: " + i);                                   
+                                    
                                     p = new Player(id,gunPositions.get(i).getGunPosition() , rot);
 
                                     p.gunIndex = i;

@@ -39,7 +39,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         this.ctx = ctx;
-        if(ServerMainTest.players.size() >= ServerMainTest.MaxPlayer) return;
+        if(ServerMainTest.players.size() > ServerMainTest.MaxPlayer) return;
         
         System.out.println ("Player " + p.getId () + " connected to the room!");
         
