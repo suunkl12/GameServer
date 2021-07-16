@@ -18,7 +18,7 @@ public class Ider{
     private Integer id = 0;
 
     public Integer next(){
-
+        
         if (dump.size() > 0){
 
             int i = dump.get(0);

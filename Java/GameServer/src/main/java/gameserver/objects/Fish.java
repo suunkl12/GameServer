@@ -42,7 +42,7 @@ public class Fish extends GameObject{
         this.ft = ft;
         this.isRandomTarget = isRandomTarget;
         this.health = ft.getAnimalID();
-        spawn();
+        ServerMainTest.mapManager.getGameMap().addInQueue(this::spawn);
     }
     
     public int getHealth() {
@@ -56,6 +56,11 @@ public class Fish extends GameObject{
     public FishType getType(){
         return ft;
     }
+
+    public ScheduledExecutorService getE() {
+        return e;
+    }
+    
     private void spawn(){
 
         b = new SimulationBody(ft.getColor());
@@ -97,18 +102,23 @@ public class Fish extends GameObject{
 
 
         e.scheduleAtFixedRate(()->ServerMainTest.mapManager.getGameMap().addInQueue(this::sendAndSetFishCord), 0, 16, TimeUnit.MILLISECONDS) ;
-        e.schedule(() -> ServerMainTest.mapManager.getGameMap().addInQueue(this::dispose), 33000, TimeUnit.MILLISECONDS);
+        e.schedule(() -> ServerMainTest.mapManager.getGameMap().addInQueue(this::dispose), 36000, TimeUnit.MILLISECONDS);
 
     }
-    public synchronized void dispose(){
+    public void dispose(){
 
+        
         if (b != null && b.getFixtureCount() > 0) {
             b.removeAllFixtures();
-            fishIder.returnBackID(getId());
+            
 
+            //nếu như remove 1 cái gì đó trong list mà nó vẫn còn trong iteration, nó sẽ bị concurrent modification exception
             ServerMainTest.mapManager.getGameMap().removeBody(b);
+            
+            
             ServerMainTest.mapManager.fishes.remove(getId());
-
+            fishIder.returnBackID(getId());
+            
             //TODO: send to clients to delete object
             for (Player p : ServerMainTest.players.values())
             {
@@ -117,6 +127,8 @@ public class Fish extends GameObject{
 
         }
 
+        
+        //Nếu có schedule để dispose thì ngừng lại, chỉ cần dispose 1 lần thôi
         if(e != null && !e.isShutdown()) e.shutdown();
 
     }

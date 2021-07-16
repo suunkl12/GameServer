@@ -258,6 +258,9 @@ public abstract class SimulationFrame extends JFrame {
 	 * the game, graphics, and poll for input.
 	 */
 	private void gameLoop() {
+            //Custom function
+            executeQueue();
+            
 		// get the graphics object to render to
 		Graphics2D g = (Graphics2D)this.canvas.getBufferStrategy().getDrawGraphics();
 		
@@ -307,8 +310,7 @@ public abstract class SimulationFrame extends JFrame {
         // (on Linux, this fixes event queue problems)
         Toolkit.getDefaultToolkit().sync();
                             
-                           //Custom function
-                           executeQueue();
+                           
 	}
 
 	/**
@@ -768,16 +770,16 @@ public abstract class SimulationFrame extends JFrame {
         
         private synchronized void executeQueue(){
             
-            for(Runnable r : runnables){
-                
+        
+        // iteration này sẽ không bị lỗi concurrent modification
+        for(Iterator<Runnable> iterator = runnables.iterator(); iterator.hasNext();){
                 try{
-                    
+                    Runnable r= iterator.next();
                     r.run();
                     
                 }catch(Exception e){}
                 
-            }
-            
+            }    
             runnables.clear();
         }
 //</editor-fold>

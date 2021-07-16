@@ -72,27 +72,13 @@ public class BanCaPhysics extends SimulationFrame {
     
     public class CustomCollision extends CollisionListenerAdapter<CollisionBody<BodyFixture>, BodyFixture>{
 
-        //unknow
-        @Override
-        public boolean collision(ManifoldCollisionData<CollisionBody<BodyFixture>, BodyFixture> collision) {
-           //on(collision.getFixture1(),collision.getFixture2());
-            
-            return true; //To change body of generated methods, choose Tools | Templates.
-        }
-
         //cheaper
         @Override
         public boolean collision(BroadphaseCollisionData<CollisionBody<BodyFixture>, BodyFixture> collision) {
             on(collision.getFixture1(),collision.getFixture2());
-            return super.collision(collision); //To change body of generated methods, choose Tools | Templates.
+            return true; //To change body of generated methods, choose Tools | Templates.
         }
 
-        //expensive
-        @Override
-        public boolean collision(NarrowphaseCollisionData<CollisionBody<BodyFixture>, BodyFixture> collision) {
-            //on(collision.getFixture1(),collision.getFixture2());
-            return super.collision(collision); //To change body of generated methods, choose Tools | Templates.
-        }
 
         
     }
@@ -102,10 +88,16 @@ public class BanCaPhysics extends SimulationFrame {
         if (entry == null) return;
         
         if(entry.getValue() instanceof Fish){
-            entry.getKey().dispose();
-            ((Fish)entry.getValue()).dispose();
+            //entry.getKey().dispose();
+            //((Fish)entry.getValue()).dispose();
+            
+            //addInQueue( () -> entry.getKey().dispose() ); là một cách khác để gọi delegate
+            addInQueue(entry.getKey()::dispose);
+            addInQueue(((Fish)entry.getValue())::dispose);
+            
         }
     }
+    
     
     public static Map.Entry<Bullet, GameObject> get(BodyFixture bf, BodyFixture bf2){
 
@@ -156,24 +148,26 @@ public class BanCaPhysics extends SimulationFrame {
                     //Fish c = new Fish(1+j+10, new Vector2(7.5f, -2+j), new Rotation(0,0), FishType.PIG,false);
                     Fish c = new Fish(id, new Vector2(7.5f, -2+j), new Rotation(0,0), FishType.PIG,false);
                 }
-            if(waveCount>15)
+            if(waveCount>15&&waveCount<=20)
                 for (int j = 0; j < 5; j++) {
                     int id = Fish.fishIder.next();
                     //Fish c = new Fish(1+j+10, new Vector2(-7.5f, -2+j), new Rotation(0,0), FishType.MOUSE,false);
                     Fish c = new Fish(id, new Vector2(-7.5f, -2+j), new Rotation(0,0), FishType.MOUSE,false);
 
                 }
-            if(waveCount>20)
+            if(waveCount>20&&waveCount<=25)
                 for (int j = 0; j < 5; j++) {
-                    Fish c = new Fish(1+j+10, new Vector2(-7.5f, -2+j), new Rotation(0,0), FishType.RABBIT,false);
-
+                    int id = Fish.fishIder.next();
+                    //Fish c = new Fish(1+j+10, new Vector2(-7.5f, -2+j), new Rotation(0,0), FishType.RABBIT,false);
+                    Fish c = new Fish(id, new Vector2(-7.5f, -2+j), new Rotation(0,0), FishType.RABBIT,false);
                 }
             if(waveCount>25)
                 for (int j = 0; j < 5; j++) {
-                    Fish c = new Fish(1+j+10, new Vector2(-7.5f, -2+j), new Rotation(0,0), FishType.CHICKEN,false);
-
+                    int id = Fish.fishIder.next();
+                    //Fish c = new Fish(1+j+10, new Vector2(-7.5f, -2+j), new Rotation(0,0), FishType.CHICKEN,false);
+                    Fish c = new Fish(id, new Vector2(-7.5f, -2+j), new Rotation(0,0), FishType.CHICKEN,false);
                 }
-            if(waveCount==30)
+            if(waveCount>=30)
                 waveCount=0;
             waveCount++;
             i=0;

@@ -38,7 +38,7 @@ public class Bullet extends GameObject {
         super(id, position);
 
         this.rotation = rotation;
-        spawn();
+        ServerMainTest.mapManager.getGameMap().addInQueue(this::spawn);
     }
 
     private void spawn(){
@@ -66,20 +66,26 @@ public class Bullet extends GameObject {
 
     }
 
-    public synchronized void dispose(){
+    public void dispose(){
 
+        
+        
         if (b != null && b.getFixtureCount() > 0) {
             b.removeAllFixtures();
-            bulletIder.returnBackID(getId());
+            
             
             ServerMainTest.mapManager.getGameMap().removeBody(b);
+            
             ServerMainTest.mapManager.bullets.remove(getId());
             
-            //TODO: send to clients to delete object
-            for (Player p : ServerMainTest.players.values())
-            {
-                Utils.packetInstance(ObjectDespawnPacket.class , p).write(this.getId(),ObjectType.BULLET);
-            }
+            bulletIder.returnBackID(getId());
+            
+
+//            for (Player p : ServerMainTest.players.values())
+//            {
+//                Utils.packetInstance(ObjectDespawnPacket.class , p).write(this.getId(),ObjectType.BULLET);
+//            }
+            Utils.writeAll(ObjectDespawnPacket.class, this.getId(),ObjectType.BULLET);
             
         }
 
@@ -99,5 +105,10 @@ public class Bullet extends GameObject {
         }
     }
 
+    public ScheduledExecutorService getE() {
+        return e;
+    }
+
+    
 
 }
